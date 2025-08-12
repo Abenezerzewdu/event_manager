@@ -7,25 +7,25 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * used to update the users table to add phone, is_admin, and role columns.
      */
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-           $table->string('phone')->nullable();            // Used string if phone contains '+' or leading zeros
-            $table->boolean('is_admin')->default(false);
-            $table->enum('role', ['organizer', 'guest', 'vendor'])->nullable();
+         //  $table->string('phone')->nullable();            // Used string if phone contains '+' or leading zeros
+          //  $table->boolean('is_admin')->default(false);
+         //   $table->enum('role', ['organizer', 'guest', 'vendor'])->nullable();
         });
     }
 
-    /**
-     * Reverse the migrations.
+    /* Reverse the migrations.
      */
+    
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-                        $table->dropColumn(['phone', 'is_admin', 'role']);
+       // Schema::table('users', function (Blueprint $table) {
+                        //$table->dropColumn(['phone', 'is_admin', 'role']);
 
-        });
+      //  });
     }
 };
