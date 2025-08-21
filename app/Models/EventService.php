@@ -9,6 +9,7 @@ class EventService extends Model
     protected $fillable = [
         'event_id',
         'service_id',
+        'vendor_service_id',
         'quantity',
         'notes'
     ];
@@ -21,5 +22,10 @@ class EventService extends Model
     public function service()
     {
         return $this->belongsTo(Service::class);
+    }
+
+    public function vendorService()
+    {
+        return $this->belongsTo(VendorService::class);
     }
 }

@@ -11,12 +11,14 @@ class Event extends Model
         'description',
         'date',
         'location',
+        'budget',
         'user_id',
         'event_type_id'
     ];
 
     protected $casts = [
-        'date' => 'datetime'
+        'date' => 'datetime',
+        'budget' => 'decimal:2'
     ];
 
     public function user()

@@ -8,7 +8,7 @@ class EventType extends Model
 {
     protected $fillable = [
         'name',
-        'description'
+        'category'
     ];
 
     public function events()
