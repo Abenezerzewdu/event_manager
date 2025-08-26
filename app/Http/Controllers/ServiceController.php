@@ -1,0 +1,82 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Service;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+
+class ServiceController extends Controller
+{
+    public function index()
+    {
+        return Inertia::render('Service/Index', [
+            'services' => Service::all(),
+            'message' => 'List of Services'
+        ]);
+    }
+
+    public function create()
+    {
+        return Inertia::render('Service/Create', [
+            'message' => 'Create a new Service'
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'category' => 'nullable|string|in:planned,unplanned',
+        ]);
+
+        $service = Service::create($request->only('name','description','price','category'));
+
+        return redirect()->route('service.show', $service->id)
+                         ->with('success', 'Service created successfully!');
+    }
+
+    public function show($id)
+    {
+        $service = Service::findOrFail($id);
+        return Inertia::render('Service/Show', [
+            'service' => $service
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $service = Service::findOrFail($id);
+        return Inertia::render('Service/Edit', [
+            'service' => $service,
+            'message' => 'Edit Service'
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'category' => 'nullable|string|in:planned,unplanned',
+        ]);
+
+        $service = Service::findOrFail($id);
+        $service->update($request->only('name','description','price','category'));
+
+        return redirect()->route('service.show', $service->id)
+                         ->with('success', 'Service updated successfully!');
+    }
+
+    public function destroy($id)
+    {
+        $service = Service::findOrFail($id);
+        $service->delete();
+
+        return redirect()->route('service.index')
+                         ->with('success', 'Service deleted successfully!');
+    }
+}

@@ -1,22 +1,24 @@
 <template>
-  <div class="p-6">
-    <h1 class="text-2xl font-bold mb-4">Event Type Details</h1>
+    <div class="p-6">
+        <h1>Event Type Details</h1>
 
-    <div class="mb-2">
-      <strong>Name:</strong> {{ eventType.name }}
-    </div>
-    <div class="mb-2">
-      <strong>Category:</strong> {{ eventType.category }}
-    </div>
+        <div
+            v-if="page.props.flash.success"
+            class="bg-green-200 p-2 mb-4 rounded"
+        >
+            {{ page.props.flash.success }}
+        </div>
 
-    <router-link href="/eventtype/create" class="text-blue-500 underline">
-      Create New Event Type
-    </router-link>
-  </div>
+        <p><strong>ID:</strong> {{ eventType.id }}</p>
+        <p><strong>Name:</strong> {{ eventType.name }}</p>
+        <p><strong>Category:</strong> {{ eventType.category }}</p>
+        <p><strong>Created At:</strong> {{ eventType.created_at }}</p>
+    </div>
 </template>
 
 <script setup>
+
 const props = defineProps({
-  eventType: Object
+    eventType: Object
 })
 </script>
