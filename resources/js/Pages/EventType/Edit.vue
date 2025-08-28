@@ -51,6 +51,4 @@ function submit() {
 }
 </script>
 
-<style script>
-/* Optional styling */
-</style>
+

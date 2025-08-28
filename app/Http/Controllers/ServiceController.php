@@ -11,15 +11,15 @@ class ServiceController extends Controller
     public function index()
     {
         return Inertia::render('Service/Index', [
-            'services' => Service::all(),
-            'message' => 'List of Services'
+            'message' => 'Hello from ServiceController!',
+            'services' => Service::all()
         ]);
     }
 
     public function create()
     {
         return Inertia::render('Service/Create', [
-            'message' => 'Create a new Service'
+            'message' => 'Create a new service',
         ]);
     }
 
@@ -29,10 +29,10 @@ class ServiceController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'category' => 'nullable|string|in:planned,unplanned',
+            'category' => 'required|string|in:planned,unplanned',
         ]);
 
-        $service = Service::create($request->only('name','description','price','category'));
+        $service = Service::create($validated);
 
         return redirect()->route('service.show', $service->id)
                          ->with('success', 'Service created successfully!');
@@ -41,6 +41,7 @@ class ServiceController extends Controller
     public function show($id)
     {
         $service = Service::findOrFail($id);
+
         return Inertia::render('Service/Show', [
             'service' => $service
         ]);
@@ -49,6 +50,7 @@ class ServiceController extends Controller
     public function edit($id)
     {
         $service = Service::findOrFail($id);
+
         return Inertia::render('Service/Edit', [
             'service' => $service,
             'message' => 'Edit Service'
@@ -61,11 +63,11 @@ class ServiceController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'category' => 'nullable|string|in:planned,unplanned',
+            'category' => 'required|string|in:planned,unplanned',
         ]);
 
         $service = Service::findOrFail($id);
-        $service->update($request->only('name','description','price','category'));
+        $service->update($validated);
 
         return redirect()->route('service.show', $service->id)
                          ->with('success', 'Service updated successfully!');

@@ -1,64 +1,42 @@
 <template>
-  <div class="max-w-lg mx-auto p-6 bg-white rounded shadow">
-    <h1 class="text-2xl font-bold mb-4">{{ message }}</h1>
+  <div class="p-6">
+    <h1>{{ message }}</h1>
 
-    <form @submit.prevent="form.put(route('service.update', service.id))">
-      <!-- Name -->
+    <form @submit.prevent="submitForm" class="max-w-md mx-auto mt-6">
       <div class="mb-4">
-        <label class="block mb-1 font-semibold">Name</label>
-        <input
-          v-model="form.name"
-          type="text"
-          class="w-full border rounded px-3 py-2"
-          placeholder="Service Name"
-        />
-        <span v-if="form.errors.name" class="text-red-500 text-sm">{{ form.errors.name }}</span>
+        <label>Name:</label>
+        <input v-model="form.name" type="text" class="border p-2 w-full"/>
       </div>
 
-      <!-- Description -->
       <div class="mb-4">
-        <label class="block mb-1 font-semibold">Description</label>
-        <textarea
-          v-model="form.description"
-          class="w-full border rounded px-3 py-2"
-          placeholder="Service Description"
-        ></textarea>
-        <span v-if="form.errors.description" class="text-red-500 text-sm">{{ form.errors.description }}</span>
+        <label>Description:</label>
+        <textarea v-model="form.description" class="border p-2 w-full"></textarea>
       </div>
 
-      <!-- Price -->
       <div class="mb-4">
-        <label class="block mb-1 font-semibold">Price</label>
-        <input
-          v-model="form.price"
-          type="number"
-          step="0.01"
-          class="w-full border rounded px-3 py-2"
-          placeholder="Service Price"
-        />
-        <span v-if="form.errors.price" class="text-red-500 text-sm">{{ form.errors.price }}</span>
+        <label>Price:</label>
+        <input v-model="form.price" type="number" step="0.01" class="border p-2 w-full"/>
       </div>
 
-      <!-- Category -->
       <div class="mb-4">
-        <label class="block mb-1 font-semibold">Category</label>
-        <select v-model="form.category" class="w-full border rounded px-3 py-2">
+        <label>Category:</label>
+        <select v-model="form.category" class="border p-2 w-full">
           <option value="">Select Category</option>
           <option value="planned">Planned</option>
           <option value="unplanned">Unplanned</option>
         </select>
-        <span v-if="form.errors.category" class="text-red-500 text-sm">{{ form.errors.category }}</span>
       </div>
 
-      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-        Update Service
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded" :disabled="form.processing">
+        <span v-if="form.processing">Updating...</span>
+        <span v-else>Update</span>
       </button>
     </form>
   </div>
 </template>
 
 <script setup>
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from "@inertiajs/vue3";
 
 const props = defineProps({
   service: Object,
@@ -71,4 +49,8 @@ const form = useForm({
   price: props.service.price,
   category: props.service.category
 });
+
+function submitForm() {
+  form.put(`/service/${props.service.id}`);
+}
 </script>

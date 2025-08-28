@@ -48,13 +48,25 @@ Route::middleware('auth')->group(function () {
 
 
 Route::prefix('service')->controller(ServiceController::class)->group(function () {
-    Route::get('/', 'index');
+    Route::get('/', 'index')->name('service.index');
     Route::get('/create', 'create')->name('service.create');
     Route::post('/store', 'store')->name('service.store');
     Route::get('/{id}', 'show')->name('service.show');
-    Route::get('/service/{id}/edit', 'edit')->name('service.edit');
-    Route::put('/service/{id}', 'update')->name('service.update');
+    Route::get('/{id}/edit', 'edit')->name('service.edit');
+    Route::put('/{id}', 'update')->name('service.update');
     Route::delete('/{id}', 'destroy')->name('service.destroy');
+});
+
+use App\Http\Controllers\UserController;
+
+Route::prefix('user')->controller(UserController::class)->group(function () {
+    Route::get('/', 'index')->name('user.index');
+    Route::get('/create', 'create')->name('user.create');
+    Route::post('/store', 'store')->name('user.store');
+    Route::get('/{id}', 'show')->name('user.show');
+    Route::get('/user/{id}/edit', 'edit')->name('user.edit');
+    Route::put('/user/{id}', 'update')->name('user.update');
+    Route::delete('/{id}', 'destroy')->name('user.destroy');
 });
 
 
