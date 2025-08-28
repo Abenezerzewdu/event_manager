@@ -1,34 +1,39 @@
+import "../css/app.css";
 import "./bootstrap";
-import { createApp, h } from "vue";
+
 import { createInertiaApp } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
-// Axios configuration
+import { createApp, h } from "vue";
+import { ZiggyVue } from "../../vendor/tightenco/ziggy";
 import axios from "axios";
-axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
-axios.defaults.withCredentials = true;
-axios.defaults.withXSRFToken = true;
 
-// Get CSRF token
-const csrfToken = document.querySelector('meta[name="csrf-token"]');
-if (csrfToken) {
-    axios.defaults.headers.common["X-CSRF-TOKEN"] = csrfToken.content;
+const token = document.head.querySelector('meta[name="csrf-token"]');
+
+if (token) {
+    axios.defaults.headers.common["X-CSRF-TOKEN"] = token.content;
 } else {
-    console.error("CSRF token not found");
+    console.error("CSRF token not found!");
 }
 
-// Make axios available globally
-window.axios = axios;
+axios.defaults.withCredentials = true; // ✅ send cookies with requests
+window.axios = axios; // optional, if you want axios globally
+
+const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
 createInertiaApp({
-    resolve: (name) => {
-        return resolvePageComponent(
+    title: (title) => `${title} - ${appName}`,
+    resolve: (name) =>
+        resolvePageComponent(
             `./Pages/${name}.vue`,
             import.meta.glob("./Pages/**/*.vue")
-        );
-    },
+        ),
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
+        return createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(ZiggyVue)
             .mount(el);
+    },
+    progress: {
+        color: "#4B5563",
     },
 });
