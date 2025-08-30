@@ -10,7 +10,7 @@ class ServiceController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Service/Index', [
+        return Inertia::render('service/Index', [
             'message' => 'Hello from ServiceController!',
             'services' => Service::all()
         ]);
@@ -18,7 +18,7 @@ class ServiceController extends Controller
 
     public function create()
     {
-        return Inertia::render('Service/Create', [
+        return Inertia::render('service/Create', [
             'message' => 'Create a new service',
         ]);
     }
@@ -42,7 +42,7 @@ class ServiceController extends Controller
     {
         $service = Service::findOrFail($id);
 
-        return Inertia::render('Service/Show', [
+        return Inertia::render('service/Show', [
             'service' => $service
         ]);
     }
@@ -51,7 +51,7 @@ class ServiceController extends Controller
     {
         $service = Service::findOrFail($id);
 
-        return Inertia::render('Service/Edit', [
+        return Inertia::render('service/Edit', [
             'service' => $service,
             'message' => 'Edit Service'
         ]);
@@ -69,7 +69,7 @@ class ServiceController extends Controller
         $service = Service::findOrFail($id);
         $service->update($validated);
 
-        return redirect()->route('service.show', $service->id)
+        return redirect()->route('service.index', $service->id)
                          ->with('success', 'Service updated successfully!');
     }
 

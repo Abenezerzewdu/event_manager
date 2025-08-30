@@ -65,6 +65,8 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+                $user = User::findOrFail($id);
+
         $validated = $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|max:255|unique:users,email,' . $id,
@@ -80,11 +82,10 @@ class UserController extends Controller
         unset($validated['password']);
     }
 
-        $user = User::findOrFail($id);
         $user->update($validated);
 
-        return redirect()->route('user.show', $user->id)
-                         ->with('success', 'User updated successfully!');
+      return redirect()->route('user.index')
+                 ->with('success', 'User updated successfully');
     }
 
     public function destroy($id)
@@ -93,6 +94,7 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('user.index')
-                         ->with('success', 'User deleted successfully!');
+                         ->with('success', 'User deleted
+                         successfully!');
     }
 }

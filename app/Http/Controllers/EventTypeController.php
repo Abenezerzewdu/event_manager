@@ -66,7 +66,7 @@ public function update(Request $request, $id)
     $eventType = EventType::findOrFail($id);
     $eventType->update($request->only('name', 'category'));
 
-    return redirect()->route('eventtype.show', $eventType->id)
+    return redirect()->route('eventtype.index', $eventType->id)
                      ->with('success', 'Event type updated successfully!');
 }
 

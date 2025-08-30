@@ -1,6 +1,6 @@
 <template>
-  <div class="max-w-lg mx-auto p-6 bg-white rounded shadow">
-    <h1 class="text-2xl font-bold mb-4">{{ message }}</h1>
+  <div class="max-w-lg p-6 mx-auto bg-white rounded shadow">
+    <h1 class="mb-4 text-2xl font-bold">{{ message }}</h1>
 
     <form @submit.prevent="submit">
       <div class="mb-4">
@@ -8,21 +8,21 @@
         <input
           v-model="form.name"
           type="text"
-          class="w-full border rounded px-3 py-2"
+          class="w-full px-3 py-2 border rounded"
         />
-        <span v-if="errors.name" class="text-red-500 text-sm">{{ errors.name }}</span>
+        <span v-if="form.errors.name" class="text-sm text-red-500">{{ form.errors.name }}</span>
       </div>
 
       <div class="mb-4">
         <label class="block mb-1 font-semibold">Category</label>
-        <select v-model="form.category" class="w-full border rounded px-3 py-2">
+        <select v-model="form.category" class="w-full px-3 py-2 border rounded">
           <option value="planned">Planned</option>
           <option value="unplanned">Unplanned</option>
         </select>
-        <span v-if="errors.category" class="text-red-500 text-sm">{{ errors.category }}</span>
+        <span v-if="form.errors.category" class="text-sm text-red-500">{{ form.errors.category }}</span>
       </div>
 
-      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+      <button type="submit" class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
         Update
       </button>
     </form>
@@ -30,25 +30,23 @@
 </template>
 
 <script setup>
-import { Inertia } from '@inertiajs/inertia';
+import { useForm, router } from '@inertiajs/vue3';
 
 const props = defineProps({
   eventType: Object,
   message: String
 });
 
-const form = reactive({
-  name: props.eventType.name,
-  category: props.eventType.category
+const form = useForm({
+  name: props.eventType?.name || '',
+  category: props.eventType?.category || ''
 });
 
-const errors = ref({});
-
 function submit() {
-  Inertia.put(route('eventtype.update', props.eventType.id), form, {
-    onError: (err) => (errors.value = err)
+  form.put(route('eventtype.update', props.eventType.id), {
+    onSuccess: () => {
+      router.visit(route('eventtype.index'));
+    }
   });
 }
 </script>
-
-

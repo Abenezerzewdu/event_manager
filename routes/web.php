@@ -7,17 +7,19 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\EventTypeController;
+use App\Http\Controllers\UserController;
+
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::prefix('eventtype')->controller(EventTypeController::class)->group(function () {
-    Route::get('/', 'index');
+    Route::get('/', 'index')->name('eventtype.index');
     Route::get('/create', 'create')->name('eventtype.create');
     Route::post('/store', 'store')->name('eventtype.store');
+    Route::get('/{id}/edit', 'edit')->name('eventtype.edit');
     Route::get('/{id}', 'show')->name('eventtype.show');
-    Route::get('/eventtype/{id}/edit', [EventTypeController::class, 'edit'])->name('eventtype.edit');
-    Route::put('/eventtype/{id}', [EventTypeController::class, 'update'])->name('eventtype.update');
+    Route::put('/{id}', 'update')->name('eventtype.update');
     Route::delete('/{id}', 'destroy')->name('eventtype.destroy');
 
 });
@@ -51,24 +53,22 @@ Route::prefix('service')->controller(ServiceController::class)->group(function (
     Route::get('/', 'index')->name('service.index');
     Route::get('/create', 'create')->name('service.create');
     Route::post('/store', 'store')->name('service.store');
-    Route::get('/{id}', 'show')->name('service.show');
     Route::get('/{id}/edit', 'edit')->name('service.edit');
+    Route::get('/{id}', 'show')->name('service.show');
     Route::put('/{id}', 'update')->name('service.update');
     Route::delete('/{id}', 'destroy')->name('service.destroy');
 });
 
-use App\Http\Controllers\UserController;
 
 Route::prefix('user')->controller(UserController::class)->group(function () {
     Route::get('/', 'index')->name('user.index');
     Route::get('/create', 'create')->name('user.create');
     Route::post('/store', 'store')->name('user.store');
+    Route::get('/{id}/edit', 'edit')->name('user.edit');
     Route::get('/{id}', 'show')->name('user.show');
-    Route::get('/user/{id}/edit', 'edit')->name('user.edit');
-    Route::put('/user/{id}', 'update')->name('user.update');
+    Route::put('/{id}', 'update')->name('user.update');
     Route::delete('/{id}', 'destroy')->name('user.destroy');
 });
-
 
 
 require __DIR__.'/auth.php';
