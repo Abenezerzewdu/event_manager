@@ -28,7 +28,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('EventType/Home', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -48,7 +48,9 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
+Route::get('/home',function(){
+    return Inertia::render('EventType/AppHeader');
+});
 
 Route::prefix('service')->controller(ServiceController::class)->group(function () {
     Route::get('/', 'index');
