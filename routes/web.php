@@ -9,6 +9,9 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\EventTypeController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
+Route::get('/vendor',function(){ 
+    return Inertia::render('Vendor/index');
+});
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::prefix('eventtype')->controller(EventTypeController::class)->group(function () {
