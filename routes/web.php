@@ -3,12 +3,13 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\EventTypeController;
-use App\Http\Controllers\UserController;
 
+use App\Http\Controllers\EventTypeController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -68,6 +69,16 @@ Route::prefix('user')->controller(UserController::class)->group(function () {
     Route::get('/{id}', 'show')->name('user.show');
     Route::put('/{id}', 'update')->name('user.update');
     Route::delete('/{id}', 'destroy')->name('user.destroy');
+});
+
+Route::prefix('event')->controller(EventController::class)->group(function () {
+    Route::get('/', 'index')->name('event.index');
+    Route::get('/create', 'create')->name('event.create');
+    Route::post('/store', 'store')->name('event.store');
+    Route::get('/{id}', 'show')->name('event.show');
+    Route::get('/{id}/edit', 'edit')->name('event.edit');
+    Route::put('/{id}', 'update')->name('event.update');
+    Route::delete('/{id}', 'destroy')->name('event.destroy');
 });
 
 
