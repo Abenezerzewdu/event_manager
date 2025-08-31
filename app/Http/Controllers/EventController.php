@@ -38,7 +38,10 @@ class EventController extends Controller
             'location' => 'required|string',
             'budget' => 'required|numeric|min:0',
             'user_id' => 'required|exists:users,id',
-            'event_type_id' => 'required|exists:event_types,id'
+            'is_planned' => 'boolean',
+            'event_type_id' => 'required|exists:event_types,id',
+            'event_date' => 'required|date|after_or_equal:today',
+
         ]);
 
         $event = Event::create($validated);

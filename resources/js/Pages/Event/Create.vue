@@ -16,7 +16,7 @@
                 <p class="text-blue-100">Fill in the details to create a new event</p>
               </div>
             </div>
-            <Link
+            <!-- <Link
               :href="route('event.index')"
               class="flex items-center text-white transition-colors hover:text-blue-200"
             >
@@ -24,7 +24,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
               Back to Events
-            </Link>
+            </Link> -->
           </div>
         </div>
 
@@ -196,6 +196,8 @@
                 Cancel
               </Link>
             </div>
+           
+
           </form>
         </div>
       </div>

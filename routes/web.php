@@ -12,7 +12,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\EventTypeController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
-Route::get('/vendor',function(){ 
+Route::get('/vendor',function(){
     return Inertia::render('Vendor/index');
 });
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -46,7 +46,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

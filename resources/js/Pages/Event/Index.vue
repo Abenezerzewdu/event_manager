@@ -148,9 +148,9 @@
     <div v-if="currentView === 'create'">
       <div class="flex items-center justify-between mb-6">
         <h1 class="text-3xl font-bold text-blue-800">Create New Event</h1>
-        <button @click="currentView = 'index'" class="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600">
+        <!-- <button @click="currentView = 'index'" class="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600">
           Back to Events
-        </button>
+        </button> -->
       </div>
 
       <div class="p-6 bg-white rounded-lg shadow-md">
@@ -207,9 +207,9 @@
     <div v-if="currentView === 'show' && currentEvent">
       <div class="flex items-center justify-between mb-6">
         <h1 class="text-3xl font-bold text-blue-800">Event Details</h1>
-        <button @click="currentView = 'index'" class="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600">
+        <!-- <button @click="currentView = 'index'" class="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600">
           Back to Events
-        </button>
+        </button> -->
       </div>
 
       <div class="overflow-hidden bg-white rounded-lg shadow-md">
@@ -264,9 +264,9 @@
     <div v-if="currentView === 'edit' && currentEvent">
       <div class="flex items-center justify-between mb-6">
         <h1 class="text-3xl font-bold text-blue-800">Edit Event</h1>
-        <button @click="currentView = 'index'" class="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600">
+        <!-- <button @click="currentView = 'index'" class="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600">
           Back to Events
-        </button>
+        </button> -->
       </div>
 
       <div class="p-6 bg-white rounded-lg shadow-md">
@@ -307,7 +307,7 @@
             </div>
           </div>
           <div class="flex justify-end mt-6">
-            <button type="button" @click="currentView = 'show'" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <button type="button" @click="currentView = 'index'" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
               Cancel
             </button>
             <button type="submit" class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
@@ -321,43 +321,48 @@
 </template>
 
 <script>
+
 export default {
   name: 'EventManagement',
+  props: {
+    events: Array,
+    eventTypes: Array
+  },
   data() {
     return {
       currentView: 'index',
       events: [
         {
           id: 1,
-          title: 'Annual Conference',
-          event_type: 'Conference',
+          title: '',
+          event_type: '',
           event_type_id: 1,
-          event_date: '2023-11-15',
-          location: 'Convention Center',
+          event_date: '',
+          location: '',
           budget: 5000,
           is_planned: true,
-          description: 'Annual industry conference with keynote speakers',
-          organizer: 'John Smith'
+          description: '',
+          organizer: ''
         },
         {
           id: 2,
-          title: 'Product Launch',
-          event_type: 'Launch Event',
+          title: '',
+          event_type: '',
           event_type_id: 2,
-          event_date: '2023-10-20',
-          location: 'Headquarters',
+          event_date: '',
+          location: '',
           budget: 3000,
           is_planned: false,
-          description: 'Launch of our new product line',
-          organizer: 'Sarah Johnson'
+          description: '',
+          organizer: ''
         }
       ],
       eventTypes: [
-        { id: 1, name: 'Conference' },
-        { id: 2, name: 'Launch Event' },
-        { id: 3, name: 'Workshop' },
-        { id: 4, name: 'Seminar' },
-        { id: 5, name: 'Networking' }
+        { id: 1, name: '' },
+        { id: 2, name: '' },
+        { id: 3, name: '' },
+        { id: 4, name: '' },
+        { id: 5, name: '' }
       ],
       currentEvent: null,
       form: {
@@ -368,12 +373,14 @@ export default {
         budget: 0,
         is_planned: true,
         description: ''
-      }
+      },
+      errors: {} // store validation errors
     }
   },
   computed: {
     upcomingEventsCount() {
       const today = new Date();
+      today.setHours(0,0,0,0);
       return this.events.filter(event => new Date(event.event_date) >= today).length;
     },
     totalBudget() {
@@ -382,15 +389,64 @@ export default {
   },
   methods: {
     formatDate(dateString) {
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      return new Date(dateString).toLocaleDateString(undefined, options);
+      const regex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+      if (!regex.test(dateString)) {
+        return "Invalid date";
+      }
+
+      const date = new Date(dateString);
+      if (isNaN(date)) {
+        return "Invalid date";
+      }
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (date < today) {
+        return "Date cannot be in the past";
+      }
+
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      return date.toLocaleDateString(undefined, options);
     },
+
+    validateForm(formData) {
+      this.errors = {};
+      let valid = true;
+
+      if (!formData.title) {
+        this.errors.title = "Title is required";
+        valid = false;
+      }
+
+      if (!formData.event_type_id) {
+        this.errors.event_type_id = "Event type is required";
+        valid = false;
+      }
+
+      if (!formData.event_date) {
+        this.errors.event_date = "Event date is required";
+        valid = false;
+      } else {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const chosen = new Date(formData.event_date);
+        if (chosen < today) {
+          this.errors.event_date = "Event date cannot be in the past";
+          valid = false;
+        }
+      }
+
+      return valid;
+    },
+
     showEvent(event) {
       this.currentEvent = event;
       this.currentView = 'show';
     },
     editEvent(event) {
-      this.currentEvent = {...event};
+      this.currentEvent = { ...event
+        // event_type: this.eventTypes.find(t => t.id == this.form.event_type_id)?.name || '',
+};
       this.currentView = 'edit';
     },
     deleteEvent(event) {
@@ -399,7 +455,10 @@ export default {
       }
     },
     submitForm() {
-      // In a real app, this would be an API call
+      if (!this.validateForm(this.form)) {
+        return; 
+      }
+
       const newEvent = {
         id: this.events.length + 1,
         title: this.form.title,
@@ -410,18 +469,27 @@ export default {
         budget: parseFloat(this.form.budget),
         is_planned: this.form.is_planned,
         description: this.form.description,
-        organizer: 'Current User' // This would come from authentication
+        organizer: 'Current User'
       };
 
       this.events.push(newEvent);
       this.resetForm();
+        this.successMessage = "Event created successfully!";
+
       this.currentView = 'index';
+        this.currentEvent = newEvent;
+
     },
     updateEvent() {
-      // In a real app, this would be an API call
+      if (!this.validateForm(this.currentEvent)) {
+        return;
+      }
+
       const index = this.events.findIndex(e => e.id === this.currentEvent.id);
       if (index !== -1) {
-        this.events[index] = {...this.currentEvent};
+        this.events[index] = { ...this.currentEvent };
+            this.successMessage = "Event updated successfully!";
+
         this.currentView = 'show';
       }
     },
@@ -435,7 +503,10 @@ export default {
         is_planned: true,
         description: ''
       };
+      this.errors = {};
     }
   }
 }
 </script>
+
+
