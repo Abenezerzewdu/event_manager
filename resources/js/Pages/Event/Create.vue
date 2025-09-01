@@ -16,15 +16,6 @@
                 <p class="text-blue-100">Fill in the details to create a new event</p>
               </div>
             </div>
-            <!-- <Link
-              :href="route('event.index')"
-              class="flex items-center text-white transition-colors hover:text-blue-200"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              Back to Events
-            </Link> -->
           </div>
         </div>
 
@@ -32,22 +23,22 @@
         <div class="p-6">
           <form @submit.prevent="submit" class="space-y-6">
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <!-- Event Name -->
+              <!-- Event Title -->
               <div>
                 <label class="block mb-2 font-semibold text-gray-700">
                   <svg xmlns="http://www.w3.org/2000/svg" class="inline w-4 h-4 mr-1 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
-                  Event Name *
+                  Event Title *
                 </label>
                 <input
-                  v-model="form.name"
+                  v-model="form.title"
                   type="text"
                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Enter event name"
+                  placeholder="Enter event title"
                   required
                 />
-                <span v-if="form.errors.name" class="mt-1 text-sm text-red-500">{{ form.errors.name }}</span>
+                <span v-if="form.errors.title" class="mt-1 text-sm text-red-500">{{ form.errors.title }}</span>
               </div>
 
               <!-- Event Date -->
@@ -59,12 +50,13 @@
                   Event Date *
                 </label>
                 <input
-                  v-model="form.date"
+                  v-model="form.event_date"
                   type="date"
+                  min="2025-09-01"
                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
-                <span v-if="form.errors.date" class="mt-1 text-sm text-red-500">{{ form.errors.date }}</span>
+                <span v-if="form.errors.event_date" class="mt-1 text-sm text-red-500">{{ form.errors.event_date }}</span>
               </div>
             </div>
 
@@ -169,6 +161,22 @@
               </div>
             </div>
 
+            <!-- Is Planned -->
+            <div>
+              <label class="block mb-2 font-semibold text-gray-700">
+                Status *
+              </label>
+              <select
+                v-model="form.is_planned"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              >
+                <option value="1">Planned</option>
+                <option value="0">Completed</option>
+              </select>
+              <span v-if="form.errors.is_planned" class="mt-1 text-sm text-red-500">{{ form.errors.is_planned }}</span>
+            </div>
+
             <!-- Actions -->
             <div class="flex pt-6 space-x-4 border-t">
               <button
@@ -196,8 +204,6 @@
                 Cancel
               </Link>
             </div>
-           
-
           </form>
         </div>
       </div>
@@ -206,29 +212,35 @@
 </template>
 
 <script setup>
-import { useForm, Link } from '@inertiajs/vue3';
+import { useForm, Link, router } from '@inertiajs/vue3';
 
 const props = defineProps({
-  message: String,
   users: Array,
   eventTypes: Array
 });
 
 const form = useForm({
-  name: '',
+  title: '',
   description: '',
-  date: '',
+  event_date: '',
   location: '',
   budget: 0,
   user_id: '',
-  event_type_id: ''
+  event_type_id: '',
+  is_planned: 1,
 });
 
 function submit() {
   form.post(route('event.store'), {
     onSuccess: () => {
-      form.reset();
-    }
-  });
+        form.reset();
+        router.visit(route('event.show'));
+    },
+});
+
 }
+
+
+
 </script>
+

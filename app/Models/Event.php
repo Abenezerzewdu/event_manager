@@ -7,18 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     protected $fillable = [
-        'name',
+        'title',
         'description',
-        'date',
+        'event_date',
+        'is_planned',
         'location',
         'budget',
         'user_id',
-        'event_type_id'
+        'event_type_id',
     ];
 
     protected $casts = [
-        'date' => 'datetime',
-        'budget' => 'decimal:2'
+        'event_date' => 'date',
+        'budget' => 'decimal:2',
+        'is_planned' => 'boolean',
     ];
 
     public function user()

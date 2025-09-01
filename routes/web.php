@@ -6,6 +6,8 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\VendorsController;
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 
@@ -84,5 +86,15 @@ Route::prefix('event')->controller(EventController::class)->group(function () {
     Route::delete('/{id}', 'destroy')->name('event.destroy');
 });
 
+
+Route::prefix('vendor')->controller(VendorsController::class)->group(function () {
+    Route::get('/', 'index')->name('vendor.index');
+    Route::get('/create', 'create')->name('vendor.create');
+    Route::post('/store', 'store')->name('vendor.store');
+    Route::get('/{id}', 'show')->name('vendor.show');
+    Route::get('/{id}/edit', 'edit')->name('vendor.edit');
+    Route::put('/{id}', 'update')->name('vendor.update');
+    Route::delete('/{id}', 'Destroy')->name('vendor.destroy');
+});
 
 require __DIR__.'/auth.php';

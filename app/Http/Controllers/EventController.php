@@ -15,8 +15,8 @@ class EventController extends Controller
         $events = Event::with(['user', 'eventType'])->get();
 
         return Inertia::render('Event/Index', [
-            'events' => $events,
-            'message' => 'Events list'
+            'events' => $events->toArray(),
+            'eventTypes' => EventType::all()
         ]);
     }
 
@@ -25,23 +25,20 @@ class EventController extends Controller
         return Inertia::render('Event/Create', [
             'users' => User::all(),
             'eventTypes' => EventType::all(),
-            'message' => 'Create New Event'
         ]);
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'date' => 'required|date',
-            'location' => 'required|string',
-            'budget' => 'required|numeric|min:0',
-            'user_id' => 'required|exists:users,id',
-            'is_planned' => 'boolean',
-            'event_type_id' => 'required|exists:event_types,id',
             'event_date' => 'required|date|after_or_equal:today',
-
+            'location' => 'required|string|max:255',
+            'budget' => 'required|numeric|min:0',
+            'user_id' => 'required|integer|exists:users,id',
+            'event_type_id' => 'required|integer|exists:event_types,id',
+            'is_planned' => 'required|boolean',
         ]);
 
         $event = Event::create($validated);
@@ -55,7 +52,7 @@ class EventController extends Controller
         $event = Event::with(['user', 'eventType', 'guests', 'eventServices'])->findOrFail($id);
 
         return Inertia::render('Event/Show', [
-            'event' => $event
+            'event' => $event,
         ]);
     }
 
@@ -67,20 +64,20 @@ class EventController extends Controller
             'event' => $event,
             'users' => User::all(),
             'eventTypes' => EventType::all(),
-            'message' => 'Edit Event'
         ]);
     }
 
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'date' => 'required|date',
-            'location' => 'required|string',
+            'event_date' => 'required|date',
+            'location' => 'required|string|max:255',
             'budget' => 'required|numeric|min:0',
-            'user_id' => 'required|exists:users,id',
-            'event_type_id' => 'required|exists:event_types,id'
+            'user_id' => 'required|integer|exists:users,id',
+            'event_type_id' => 'required|integer|exists:event_types,id',
+            'is_planned' => 'required|boolean',
         ]);
 
         $event = Event::findOrFail($id);
