@@ -72,11 +72,14 @@
                 <input
                   v-model="form.phone"
                   type="tel"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Enter phone number"
+                  class="w-full px-4 py-3 placeholder-gray-400 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:placeholder-transparent"
+                  placeholder="0XXXXXXXXX or +251XXXXXXXXX"
                   required
+                  @input="validatePhoneNumber"
+
                 />
                 <span v-if="form.errors.phone" class="mt-1 text-sm text-red-500">{{ form.errors.phone }}</span>
+                <!-- <p class="mt-1 text-xs text-gray-500"> start with 0 or +251 </p> -->
               </div>
 
               <!-- User Account -->
@@ -99,6 +102,61 @@
                 </select>
                 <span v-if="form.errors.user_id" class="mt-1 text-sm text-red-500">{{ form.errors.user_id }}</span>
               </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <!-- Status -->
+              <div>
+                <label class="block mb-2 font-semibold text-gray-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="inline w-4 h-4 mr-1 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  Status *
+                </label>
+                <select
+                  v-model="form.status"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  required
+                >
+                  <option value="pending">Pending</option>
+                  <option value="approved">Approved</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+                <span v-if="form.errors.status" class="mt-1 text-sm text-red-500">{{ form.errors.status }}</span>
+              </div>
+
+              <!-- Vendor File -->
+              <div>
+                <label class="block mb-2 font-semibold text-gray-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="inline w-4 h-4 mr-1 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                  </svg>
+                  Vendor File
+                </label>
+                <input
+                  type="file"
+                  @input="form.vendors_file = $event.target.files[0]"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <span v-if="form.errors.vendors_file" class="mt-1 text-sm text-red-500">{{ form.errors.vendors_file }}</span>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+              <label class="block mb-2 font-semibold text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="inline w-4 h-4 mr-1 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                </svg>
+                Description
+              </label>
+              <textarea
+                v-model="form.description"
+                rows="3"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Describe the vendor..."
+              ></textarea>
+              <span v-if="form.errors.description" class="mt-1 text-sm text-red-500">{{ form.errors.description }}</span>
             </div>
 
             <!-- Actions -->
@@ -147,9 +205,43 @@ const form = useForm({
   contact_email: '',
   phone: '',
   user_id: '',
+  status: 'pending',
+  description: '',
+  vendors_file: null,
 });
 
+const validatePhoneNumber = () => {
+  // Remove any non-digit characters except +
+  form.phone = form.phone.replace(/[^\d+]/g, '');
+
+  // If starts with +251, ensure it's exactly 13 characters
+  if (form.phone.startsWith('+251') && form.phone.length > 13) {
+    form.phone = form.phone.slice(0, 13);
+  }
+  // If starts with 0, ensure it's exactly 10 characters
+  else if (form.phone.startsWith('0') && form.phone.length > 10) {
+    form.phone = form.phone.slice(0, 10);
+  }
+};
+
 function submit() {
+
+  if (form.phone) {
+    const phoneRegex = /^(0|\+251)\d{9}$/;
+    if (!phoneRegex.test(form.phone)) {
+      form.errors.phone = 'Phone must be 10 digits, start with 0 or +251';
+      return;
+    }
+  }
+
+  // Email validation: must end with @gmail.com
+  if (form.contact_email) {
+    if (!form.contact_email.endsWith('@gmail.com')) {
+      form.errors.contact_email = 'Email must end with @gmail.com.';
+      return;
+    }
+  }
+
   form.post(route('vendor.store'), {
     onSuccess: () => {
       form.reset();

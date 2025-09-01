@@ -94,7 +94,7 @@ Route::prefix('vendor')->controller(VendorsController::class)->group(function ()
     Route::get('/{id}', 'show')->name('vendor.show');
     Route::get('/{id}/edit', 'edit')->name('vendor.edit');
     Route::put('/{id}', 'update')->name('vendor.update');
-    Route::delete('/{id}', 'Destroy')->name('vendor.destroy');
+    Route::delete('/{id}', 'destroy')->name('vendor.destroy');
 });
 
 require __DIR__.'/auth.php';
