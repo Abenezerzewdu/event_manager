@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Vendor;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia; 
 
 class VendorsController extends Controller
 {
@@ -15,7 +15,11 @@ class VendorsController extends Controller
     public function index()
     {
         $vendors = Vendor::with('user')->latest()->get();
-        return view('vendors.index', compact('vendors'));
+
+        // Use Inertia to render Vue component
+        return Inertia::render('Vendors/Index', [
+            'vendors' => $vendors
+        ]);
     }
 
     /**
@@ -24,7 +28,11 @@ class VendorsController extends Controller
     public function create()
     {
         $users = User::all();
-        return view('vendors.create', compact('users'));
+
+        // Use Inertia to render Vue component
+        return Inertia::render('Vendors/Create', [
+            'users' => $users
+        ]);
     }
 
     /**
@@ -32,20 +40,14 @@ class VendorsController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
+        $request->validate([
             'company_name' => 'required|string|max:255',
             'contact_email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
+            'user_id' => 'required|exists:users,id',
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        Vendor::create($validator->validated());
+        Vendor::create($request->all());
 
         return redirect()->route('vendor.index')
             ->with('success', 'Vendor created successfully.');
@@ -56,8 +58,12 @@ class VendorsController extends Controller
      */
     public function show($id)
     {
-        $vendor = Vendor::with(['user', 'vendorServices', 'reviews'])->findOrFail($id);
-        return view('vendors.show', compact('vendor'));
+        $vendor = Vendor::with('user')->findOrFail($id);
+
+        // Use Inertia to render Vue component
+        return Inertia::render('Vendors/Show', [
+            'vendor' => $vendor
+        ]);
     }
 
     /**
@@ -67,7 +73,12 @@ class VendorsController extends Controller
     {
         $vendor = Vendor::findOrFail($id);
         $users = User::all();
-        return view('vendors.edit', compact('vendor', 'users'));
+
+        // Use Inertia to render Vue component
+        return Inertia::render('Vendors/Edit', [
+            'vendor' => $vendor,
+            'users' => $users
+        ]);
     }
 
     /**
@@ -77,20 +88,14 @@ class VendorsController extends Controller
     {
         $vendor = Vendor::findOrFail($id);
 
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
+        $request->validate([
             'company_name' => 'required|string|max:255',
             'contact_email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
+            'user_id' => 'required|exists:users,id',
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $vendor->update($validator->validated());
+        $vendor->update($request->all());
 
         return redirect()->route('vendor.index')
             ->with('success', 'Vendor updated successfully.');
