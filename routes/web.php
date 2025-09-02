@@ -12,7 +12,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 
 use App\Http\Controllers\EventTypeController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\EventServiceController;
+
+use
+App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/vendor',function(){
     return Inertia::render('Vendor/index');
@@ -95,6 +98,18 @@ Route::prefix('vendor')->controller(VendorsController::class)->group(function ()
     Route::get('/{id}/edit', 'edit')->name('vendor.edit');
     Route::put('/{id}', 'update')->name('vendor.update');
     Route::delete('/{id}', 'destroy')->name('vendor.destroy');
+});
+
+
+
+Route::prefix('event-service')->name('event-service.')->group(function () {
+    Route::get('/', [EventServiceController::class, 'index'])->name('index');
+    Route::get('/create', [EventServiceController::class, 'create'])->name('create');
+    Route::post('/', [EventServiceController::class, 'store'])->name('store');
+    Route::get('/{id}', [EventServiceController::class, 'show'])->name('show');
+    Route::get('/{id}/edit', [EventServiceController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [EventServiceController::class, 'update'])->name('update');
+    Route::delete('/{id}', [EventServiceController::class, 'destroy'])->name('destroy');
 });
 
 require __DIR__.'/auth.php';

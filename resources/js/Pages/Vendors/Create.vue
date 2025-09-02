@@ -55,6 +55,8 @@
                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Enter contact email"
                   required
+                      @input="form.clearErrors('contact_email')"
+
                 />
                 <span v-if="form.errors.contact_email" class="mt-1 text-sm text-red-500">{{ form.errors.contact_email }}</span>
               </div>
@@ -75,7 +77,8 @@
                   class="w-full px-4 py-3 placeholder-gray-400 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:placeholder-transparent"
                   placeholder="0XXXXXXXXX or +251XXXXXXXXX"
                   required
-                  @input="validatePhoneNumber"
+                      @input="() => { validatePhoneNumber(); form.clearErrors('phone'); }"
+
 
                 />
                 <span v-if="form.errors.phone" class="mt-1 text-sm text-red-500">{{ form.errors.phone }}</span>
@@ -227,12 +230,23 @@ const validatePhoneNumber = () => {
 function submit() {
 
   if (form.phone) {
-    const phoneRegex = /^(0|\+251)\d{9}$/;
-    if (!phoneRegex.test(form.phone)) {
-      form.errors.phone = 'Phone must be 10 digits, start with 0 or +251';
+  if (form.phone.startsWith('0')) {
+    if (form.phone.length !== 10) {
+      form.setError('phone', 'Phone must be 10 digits.');
       return;
     }
+  } else if (form.phone.startsWith('+251')) {
+
+    if (form.phone.length !== 13) {
+      form.setError('phone', 'Invalid number');
+      return;
+    }
+  } else {
+    form.setError('phone', 'Phone must start with 0 or +251.');
+    return;
   }
+}
+
 
   // Email validation: must end with @gmail.com
   if (form.contact_email) {
