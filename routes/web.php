@@ -112,4 +112,18 @@ Route::prefix('event-service')->name('event-service.')->group(function () {
     Route::delete('/{id}', [EventServiceController::class, 'destroy'])->name('destroy');
 });
 
+
+
+Route::prefix('vendor-service')->name('vendor-service.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\VendorServiceController::class, 'index'])->name('index');
+    Route::get('/create', [\App\Http\Controllers\VendorServiceController::class, 'create'])->name('create');
+    Route::post('/', [\App\Http\Controllers\VendorServiceController::class, 'store'])->name('store');
+    Route::get('/{vendorService}', [\App\Http\Controllers\VendorServiceController::class, 'show'])->name('show');
+    Route::get('/{vendorService}/edit', [\App\Http\Controllers\VendorServiceController::class, 'edit'])->name('edit');
+    Route::put('/{vendorService}', [\App\Http\Controllers\VendorServiceController::class, 'update'])->name('update');
+    Route::delete('/{vendorService}', [\App\Http\Controllers\VendorServiceController::class, 'destroy'])->name('destroy');
+});
+
+
+
 require __DIR__.'/auth.php';
