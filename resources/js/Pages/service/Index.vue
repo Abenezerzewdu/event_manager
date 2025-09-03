@@ -140,7 +140,7 @@
 
 <script setup>
 import { Link, router } from '@inertiajs/vue3';
-
+import Sidebar from '@/Components/Sidebar.vue';
 defineProps({
   message: String,
   services: Array

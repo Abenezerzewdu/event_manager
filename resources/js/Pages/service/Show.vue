@@ -48,7 +48,7 @@
 
               <div>
                 <h3 class="text-sm font-medium tracking-wider text-gray-500 uppercase">Created At</h3>
-                <p class="mt-1 text-gray-600">{{ new Date(service.created_at).toLocaleDateString() }}</p>
+                <p class="mt-1 text-gray-600">{{ formatDate(service.created_at) }}</p>
               </div>
             </div>
           </div>
@@ -83,8 +83,22 @@
 
 <script setup>
 import { Link } from '@inertiajs/vue3';
-
+import Sidebar from '@/Components/Sidebar.vue';
 const props = defineProps({
   service: Object
 });
+
+// Format date for display
+const formatDate = (dateString) => {
+  if (!dateString) return 'N/A';
+
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
 </script>

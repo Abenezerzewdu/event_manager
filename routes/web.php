@@ -6,11 +6,13 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\VendorsController;
+use App\Http\Controllers\GuestController;
 
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ServiceController;
 
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\VendorsController;
 use App\Http\Controllers\EventTypeController;
 use App\Http\Controllers\EventServiceController;
 
@@ -124,6 +126,19 @@ Route::prefix('vendor-service')->name('vendor-service.')->group(function () {
     Route::delete('/{vendorService}', [\App\Http\Controllers\VendorServiceController::class, 'destroy'])->name('destroy');
 });
 
+Route::prefix('guest')->name('guest.')->controller(GuestController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/create', 'create')->name('create');
+    Route::post('/', 'store')->name('store');
+    Route::get('/{guest}', 'show')->name('show');
+    Route::get('/{guest}/edit', 'edit')->name('edit');
+    Route::put('/{guest}', 'update')->name('update');
+    Route::delete('/{guest}', 'destroy')->name('destroy');
+});
+
+Route::get('/reviews', [ReviewController::class, 'index'])->name('review.index');
+Route::get('/reviews/create', [ReviewController::class, 'create'])->name('review.create');
+Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store');
 
 
 require __DIR__.'/auth.php';

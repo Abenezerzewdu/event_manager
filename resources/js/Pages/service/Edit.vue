@@ -17,19 +17,21 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">
               <i class="mr-2 text-blue-500 fa-solid fa-tag"></i>
-              Service Name
+              Service Name <span class="text-red-500">*</span>
             </label>
             <div class="relative">
-              <input v-model="form.name" type="text"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter service name">
-              <div v-if="form.errors.name" class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <input v-model="form.name" type="text" required
+                class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                :class="{'border-red-500': errors.name, 'border-gray-300': !errors.name}"
+                placeholder="Enter service name"
+                @blur="validateField('name')">
+              <div v-if="errors.name" class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                 <i class="text-red-500 fa-solid fa-circle-exclamation"></i>
               </div>
             </div>
-            <div v-if="form.errors.name" class="flex items-center mt-2 text-sm text-red-600">
+            <div v-if="errors.name" class="flex items-center mt-2 text-sm text-red-600">
               <i class="mr-1 fa-solid fa-circle-info"></i>
-              {{ form.errors.name }}
+              {{ errors.name }}
             </div>
           </div>
 
@@ -37,19 +39,21 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-700">
               <i class="mr-2 text-blue-500 fa-solid fa-file-lines"></i>
-              Description
+              Description <span class="text-red-500">*</span>
             </label>
             <div class="relative">
-              <textarea v-model="form.description"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                rows="4" placeholder="Describe the service in detail"></textarea>
-              <div v-if="form.errors.description" class="absolute top-3 right-3">
+              <textarea v-model="form.description" required
+                class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                :class="{'border-red-500': errors.description, 'border-gray-300': !errors.description}"
+                rows="4" placeholder="Describe the service in detail"
+                @blur="validateField('description')"></textarea>
+              <div v-if="errors.description" class="absolute top-3 right-3">
                 <i class="text-red-500 fa-solid fa-circle-exclamation"></i>
               </div>
             </div>
-            <div v-if="form.errors.description" class="flex items-center mt-2 text-sm text-red-600">
+            <div v-if="errors.description" class="flex items-center mt-2 text-sm text-red-600">
               <i class="mr-1 fa-solid fa-circle-info"></i>
-              {{ form.errors.description }}
+              {{ errors.description }}
             </div>
           </div>
 
@@ -59,19 +63,21 @@
             <div>
               <label class="block mb-2 text-sm font-medium text-gray-700">
                 <i class="mr-2 text-blue-500 fa-solid fa-dollar-sign"></i>
-                Price
+                Price ($) <span class="text-red-500">*</span>
               </label>
               <div class="relative">
-                <input v-model="form.price" type="number" step="0.01"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="0.00">
-                <div v-if="form.errors.price" class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <input v-model="form.price" type="number" step="0.01" min="0" required
+                  class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  :class="{'border-red-500': errors.price, 'border-gray-300': !errors.price}"
+                  placeholder="0.00"
+                  @blur="validateField('price')">
+                <div v-if="errors.price" class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                   <i class="text-red-500 fa-solid fa-circle-exclamation"></i>
                 </div>
               </div>
-              <div v-if="form.errors.price" class="flex items-center mt-2 text-sm text-red-600">
+              <div v-if="errors.price" class="flex items-center mt-2 text-sm text-red-600">
                 <i class="mr-1 fa-solid fa-circle-info"></i>
-                {{ form.errors.price }}
+                {{ errors.price }}
               </div>
             </div>
 
@@ -79,11 +85,14 @@
             <div>
               <label class="block mb-2 text-sm font-medium text-gray-700">
                 <i class="mr-2 text-blue-500 fa-solid fa-list"></i>
-                Category
+                Category <span class="text-red-500">*</span>
               </label>
               <div class="relative">
-                <select v-model="form.category"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <select v-model="form.category" required
+                  class="w-full px-4 py-3 border rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  :class="{'border-red-500': errors.category, 'border-gray-300': !errors.category}"
+                  @change="validateField('category')"
+                  @blur="validateField('category')">
                   <option value="">Select Category</option>
                   <option value="planned">Planned</option>
                   <option value="unplanned">Unplanned</option>
@@ -91,13 +100,13 @@
                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                   <i class="text-gray-400 fa-solid fa-chevron-down"></i>
                 </div>
-                <div v-if="form.errors.category" class="absolute inset-y-0 flex items-center pr-3 pointer-events-none right-8">
+                <div v-if="errors.category" class="absolute inset-y-0 flex items-center pr-3 pointer-events-none right-8">
                   <i class="text-red-500 fa-solid fa-circle-exclamation"></i>
                 </div>
               </div>
-              <div v-if="form.errors.category" class="flex items-center mt-2 text-sm text-red-600">
+              <div v-if="errors.category" class="flex items-center mt-2 text-sm text-red-600">
                 <i class="mr-1 fa-solid fa-circle-info"></i>
-                {{ form.errors.category }}
+                {{ errors.category }}
               </div>
             </div>
           </div>
@@ -113,7 +122,7 @@
               <span v-else>Update Service</span>
             </button>
 
-            <Link :href="route('service.index', service.id)" class="flex items-center justify-center px-6 py-4 text-gray-700 transition-colors bg-gray-100 rounded-lg hover:bg-gray-200">
+            <Link :href="route('service.index')" class="flex items-center justify-center px-6 py-4 text-gray-700 transition-colors bg-gray-100 rounded-lg hover:bg-gray-200">
               <i class="mr-2 fa-solid fa-times"></i>
               Cancel
             </Link>
@@ -127,13 +136,15 @@
 <script setup>
 import { useForm, router } from "@inertiajs/vue3";
 import { Link } from '@inertiajs/vue3';
-
+import { reactive } from "vue";
+import Sidebar from '@/Components/Sidebar.vue';
 const props = defineProps({
   service: Object,
   message: String,
-  errors: Object
+  serverErrors: Object
 });
 
+// Initialize form
 const form = useForm({
   name: props.service?.name || '',
   description: props.service?.description || '',
@@ -141,14 +152,77 @@ const form = useForm({
   category: props.service?.category || ''
 });
 
+// Initialize validation errors
+const errors = reactive({
+  name: '',
+  description: '',
+  price: '',
+  category: ''
+});
+
+// Sync server errors with our validation
+if (props.serverErrors) {
+  Object.keys(props.serverErrors).forEach(key => {
+    if (errors.hasOwnProperty(key)) {
+      errors[key] = props.serverErrors[key][0];
+    }
+  });
+}
+
+// Field validation function
+function validateField(field) {
+  switch(field) {
+    case 'name':
+      errors.name = form.name.trim() === '' ? 'Please enter a service name' : '';
+      break;
+    case 'description':
+      errors.description = form.description.trim() === '' ? 'Please enter a description' : '';
+      break;
+    case 'price':
+      if (form.price === '' || form.price === null) {
+        errors.price = 'Please enter a price';
+      } else if (parseFloat(form.price) < 0) {
+        errors.price = 'Price cannot be negative';
+      } else {
+        errors.price = '';
+      }
+      break;
+    case 'category':
+      errors.category = form.category === '' ? 'Please select a category' : '';
+      break;
+  }
+}
+
+// Form submission
 function submitForm() {
+  // Validate all fields before submission
+  validateField('name');
+  validateField('description');
+  validateField('price');
+  validateField('category');
+
+  // Check if there are any validation errors
+  const hasErrors = Object.values(errors).some(error => error !== '');
+
+  if (hasErrors) {
+    return; // Don't submit if there are validation errors
+  }
+
   form.put(route('service.update', props.service.id), {
     onSuccess: () => {
-
+      // Clear any existing errors on successful submission
+      Object.keys(errors).forEach(key => errors[key] = '');
       router.visit(route('service.show', props.service.id));
     },
-    onError: (errors) => {
-      console.log('Update errors:', errors);
+    onError: (serverErrors) => {
+      // Handle server-side validation errors
+      if (serverErrors) {
+        Object.keys(serverErrors).forEach(key => {
+          if (errors.hasOwnProperty(key)) {
+            errors[key] = serverErrors[key];
+          }
+        });
+      }
     }
   });
 }
