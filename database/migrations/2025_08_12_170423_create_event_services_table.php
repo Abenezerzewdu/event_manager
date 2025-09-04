@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('event_id');
             $table->unsignedBigInteger('service_id');
             $table->unsignedBigInteger('vendor_id'); 
-                    $table->enum('status', ['pending', 'confirmed', 'done'])->default('pending');
-
+            
+            
             $table->timestamps();
 
             // Foreign keys

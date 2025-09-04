@@ -20,8 +20,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 use App\Http\Controllers\EventServiceController;
 
-use
-App\Http\Controllers\Auth\AuthenticatedSessionController;
+
 
 Route::get('/vendor',function(){
 
