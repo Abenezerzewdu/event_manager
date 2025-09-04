@@ -34,7 +34,7 @@
                                 <input
                                     v-model="homeSearchQuery"
                                     type="text"
-                                    placeholder="Cari Photographer, Katering, dsb"
+                                    placeholder="Photographer, catering, venue"
                                     class="flex-1 px-4 py-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-hati-pink focus:border-transparent"
                                     @keyup.enter="searchVendors"
                                 />
@@ -165,7 +165,7 @@
                     </div>
 
                     <!-- Right Content - Wedding Image -->
-                    <!-- <div class="relative order-1 lg:order-2">
+                    <div class="relative order-1 lg:order-2">
                         <div
                             class="relative z-10 rounded-2xl overflow-hidden shadow-2xl"
                         >
@@ -173,9 +173,9 @@
                                 src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                                 alt="Wedding couple"
                                 class="w-full h-[300px] md:h-[400px] lg:h-[500px] object-cover"
-                            /> -->
-                    <!-- Play button overlay -->
-                    <!-- <div
+                            />
+                            <!-- Play button overlay -->
+                            <div
                                 class="absolute inset-0 flex items-center justify-center"
                             >
                                 <button
@@ -189,9 +189,9 @@
                                         <path d="M8 5v14l11-7z" />
                                     </svg>
                                 </button>
-                            </div> -->
-                    <!-- </div> -->
-                    <!-- </div> -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

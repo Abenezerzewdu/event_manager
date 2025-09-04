@@ -11,7 +11,8 @@ class Vendor extends Model
         'email',
         'phone',
         'address',
-        'description'
+        'description',
+        'vendors_file',
     ];
 
     public function vendorServices()
