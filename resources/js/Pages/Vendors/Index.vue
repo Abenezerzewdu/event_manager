@@ -146,7 +146,6 @@
 <script setup>
 import { Link, router } from '@inertiajs/vue3';
 import { computed } from 'vue';
-
 const props = defineProps({
   vendors: {
     type: Array,
@@ -185,7 +184,7 @@ const getStatusColor = (status) => {
 
 const deleteVendor = (vendorId) => {
   if (!confirm('Are you sure you want to delete this vendor?')) return;
- 
+
   router.delete(route('vendor.destroy', vendorId), {
     onSuccess: () => {
 

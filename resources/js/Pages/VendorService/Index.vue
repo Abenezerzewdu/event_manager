@@ -112,7 +112,6 @@
 <script setup>
 import { Link, router } from '@inertiajs/vue3';
 import { computed } from 'vue';
-
 const props = defineProps({
   vendorServices: {
     type: Array,

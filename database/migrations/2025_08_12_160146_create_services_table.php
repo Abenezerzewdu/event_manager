@@ -15,6 +15,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2)->default(0);
             $table->enum('category', ['planned', 'unplanned']);
+            $table->string('status')->default('active');
             $table->timestamps();
         });
     }

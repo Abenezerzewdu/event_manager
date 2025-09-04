@@ -1,234 +1,109 @@
+```vue
 <template>
   <div class="min-h-screen py-8 bg-gradient-to-br from-blue-50 to-indigo-100">
-    <div class="max-w-2xl px-4 mx-auto">
-      <!-- Header -->
-      <div class="mb-8 text-center">
-        <div class="inline-flex items-center justify-center w-16 h-16 mb-4 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl">
-          <i class="text-2xl text-white fa-solid fa-gear"></i>
+    <div class="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
+      <div class="p-6 bg-white rounded-lg shadow">
+        <div class="flex items-center justify-between mb-4">
+          <h1 class="text-2xl font-bold text-gray-800">Add New Service</h1>
+          <button @click="router.get('/services')" class="text-gray-400 hover:text-gray-500">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800">Create New Service</h1>
-        <p class="mt-2 text-gray-600">Add a new service to your catalog</p>
-      </div>
-
-      <!-- Form Card -->
-      <div class="p-8 bg-white shadow-lg rounded-xl">
-        <form @submit.prevent="submitForm" class="space-y-6">
-          <!-- Name Field -->
+        <form @submit.prevent="submitForm" class="space-y-4">
           <div>
-            <label class="block mb-2 text-sm font-medium text-gray-700">
-              <i class="mr-2 text-blue-500 fa-solid fa-tag"></i>
-              Service Name <span class="text-red-500">*</span>
-            </label>
-            <div class="relative">
-              <input v-model="form.name" type="text" required
-                class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                :class="{'border-red-500': errors.name, 'border-gray-300': !errors.name}"
-                placeholder="Enter service name"
-                @blur="validateField('name')">
-              <div v-if="errors.name" class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                <i class="text-red-500 fa-solid fa-circle-exclamation"></i>
-              </div>
-            </div>
-            <div v-if="errors.name" class="flex items-center mt-2 text-sm text-red-600">
-              <i class="mr-1 fa-solid fa-circle-info"></i>
-              {{ errors.name }}
-            </div>
+            <label class="block text-sm font-medium text-gray-700">Service Name</label>
+            <input 
+              v-model="form.name" 
+              type="text" 
+              required 
+              class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter service name"
+            >
           </div>
-
-          <!-- Description Field -->
           <div>
-            <label class="block mb-2 text-sm font-medium text-gray-700">
-              <i class="mr-2 text-blue-500 fa-solid fa-file-lines"></i>
-              Description <span class="text-red-500">*</span>
-            </label>
-            <div class="relative">
-              <textarea v-model="form.description" required
-                class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                :class="{'border-red-500': errors.description, 'border-gray-300': !errors.description}"
-                rows="4" placeholder="Describe the service in detail"
-                @blur="validateField('description')"></textarea>
-              <div v-if="errors.description" class="absolute top-3 right-3">
-                <i class="text-red-500 fa-solid fa-circle-exclamation"></i>
-              </div>
+            <label class="block text-sm font-medium text-gray-700">Description</label>
+            <textarea 
+              v-model="form.description" 
+              required 
+              rows="3" 
+              class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Describe the service"
+            ></textarea>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Price ($)</label>
+              <input 
+                v-model.number="form.price" 
+                type="number" 
+                step="0.01" 
+                min="0" 
+                required 
+                class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="0.00"
+              >
             </div>
-            <div v-if="errors.description" class="flex items-center mt-2 text-sm text-red-600">
-              <i class="mr-1 fa-solid fa-circle-info"></i>
-              {{ errors.description }}
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Category</label>
+              <select 
+                v-model="form.category" 
+                required 
+                class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select Category</option>
+                <option value="planned">Planned</option>
+                <option value="unplanned">Unplanned</option>
+              </select>
             </div>
           </div>
-
-          <!-- Price and Category Row -->
-          <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <!-- Price Field -->
-            <div>
-              <label class="block mb-2 text-sm font-medium text-gray-700">
-                <i class="mr-2 text-blue-500 fa-solid fa-dollar-sign"></i>
-                Price ($) <span class="text-red-500">*</span>
-              </label>
-              <div class="relative">
-                <input v-model="form.price" type="number" step="0.01" min="0" required
-                  class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  :class="{'border-red-500': errors.price, 'border-gray-300': !errors.price}"
-                  placeholder="0.00"
-                  @blur="validateField('price')">
-                <div v-if="errors.price" class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <i class="text-red-500 fa-solid fa-circle-exclamation"></i>
-                </div>
-              </div>
-              <div v-if="errors.price" class="flex items-center mt-2 text-sm text-red-600">
-                <i class="mr-1 fa-solid fa-circle-info"></i>
-                {{ errors.price }}
-              </div>
-            </div>
-
-            <!-- Category Field -->
-            <div>
-              <label class="block mb-2 text-sm font-medium text-gray-700">
-                <i class="mr-2 text-blue-500 fa-solid fa-list"></i>
-                Category <span class="text-red-500">*</span>
-              </label>
-              <div class="relative">
-                <select v-model="form.category" required
-                  class="w-full px-4 py-3 border rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  :class="{'border-red-500': errors.category, 'border-gray-300': !errors.category}"
-                  @change="validateField('category')"
-                  @blur="validateField('category')">
-                  <option value="">Select Category</option>
-                  <option value="planned">Planned</option>
-                  <option value="unplanned">Unplanned</option>
-                </select>
-                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <i class="text-gray-400 fa-solid fa-chevron-down"></i>
-                </div>
-                <div v-if="errors.category" class="absolute inset-y-0 flex items-center pr-3 pointer-events-none right-8">
-                  <i class="text-red-500 fa-solid fa-circle-exclamation"></i>
-                </div>
-              </div>
-              <div v-if="errors.category" class="flex items-center mt-2 text-sm text-red-600">
-                <i class="mr-1 fa-solid fa-circle-info"></i>
-                {{ errors.category }}
-              </div>
-            </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Status</label>
+            <select 
+              v-model="form.status" 
+              required 
+              class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
           </div>
-
-          <!-- Submit Button -->
-          <div class="pt-4">
-            <button type="submit"
-              :disabled="form.processing"
-              class="flex items-center justify-center w-full px-6 py-4 text-white transition-all duration-200 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-75">
-              <i v-if="form.processing" class="mr-2 fa-solid fa-circle-notch fa-spin"></i>
-              <i v-else class="mr-2 fa-solid fa-plus"></i>
-              <span v-if="form.processing">Creating Service...</span>
-              <span v-else>Create Service</span>
+          <div class="flex justify-end mt-6 space-x-3">
+            <button 
+              type="button" 
+              @click="router.get('/services')" 
+              class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
+              Save Service
             </button>
           </div>
         </form>
-      </div>
-
-      <!-- Additional Info -->
-      <div class="flex items-center justify-center mt-8 space-x-6 text-sm text-gray-500">
-        <div class="flex items-center">
-          <i class="mr-2 fa-solid fa-shield-alt"></i>
-          <span>Secure form</span>
-        </div>
-        <div class="flex items-center">
-          <i class="mr-2 fa-solid fa-clock"></i>
-          <span>Takes less than 2 minutes</span>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useForm } from "@inertiajs/vue3";
-import { ref, reactive } from "vue";
-import Sidebar from '@/Components/Sidebar.vue';
-const props = defineProps({
-  message: String,
-  serverErrors: Object
-});
+import { router } from '@inertiajs/vue3';
+import { reactive } from 'vue';
 
-// Initialize form
-const form = useForm({
+const form = reactive({
   name: '',
   description: '',
   price: 0,
-  category: ''
+  category: '',
+  status: 'active'
 });
 
-// Initialize validation errors
-const errors = reactive({
-  name: '',
-  description: '',
-  price: '',
-  category: ''
-});
-
-// Sync server errors with our validation
-if (props.serverErrors) {
-  Object.keys(props.serverErrors).forEach(key => {
-    if (errors.hasOwnProperty(key)) {
-      errors[key] = props.serverErrors[key][0];
-    }
+const submitForm = () => {
+  router.post('/services', form, {
+    onSuccess: () => router.get('/services'),
+    onError: (errors) => alert('Validation failed: ' + Object.values(errors).join(', ')),
   });
-}
-
-// Field validation function
-function validateField(field) {
-  switch(field) {
-    case 'name':
-      errors.name = form.name.trim() === '' ? 'Please enter a service name' : '';
-      break;
-    case 'description':
-      errors.description = form.description.trim() === '' ? 'Please enter a description' : '';
-      break;
-    case 'price':
-      if (form.price === '' || form.price === null) {
-        errors.price = 'Please enter a price';
-      } else if (parseFloat(form.price) < 0) {
-        errors.price = 'Price cannot be negative';
-      } else {
-        errors.price = '';
-      }
-      break;
-    case 'category':
-      errors.category = form.category === '' ? 'Please select a category' : '';
-      break;
-  }
-}
-
-// Form submission
-function submitForm() {
-  // Validate all fields before submission
-  validateField('name');
-  validateField('description');
-  validateField('price');
-  validateField('category');
-
-  // Check if there are any validation errors
-  const hasErrors = Object.values(errors).some(error => error !== '');
-
-  if (hasErrors) {
-    return; // Don't submit if there are validation errors
-  }
-
-  form.post(route('service.store'), {
-    onSuccess: () => {
-      form.reset();
-      // Clear any existing errors on successful submission
-      Object.keys(errors).forEach(key => errors[key] = '');
-    },
-    onError: (serverErrors) => {
-      // Handle server-side validation errors
-      if (serverErrors) {
-        Object.keys(serverErrors).forEach(key => {
-          if (errors.hasOwnProperty(key)) {
-            errors[key] = serverErrors[key];
-          }
-        });
-      }
-    }
-  });
-}
+};
 </script>
