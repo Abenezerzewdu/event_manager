@@ -11,10 +11,9 @@ class Vendor extends Model
         'company_name',
         'contact_email',
         'phone',
-        'user_id',
-        'status',
+        'address',
         'description',
-        'vendors_file'
+        'vendors_file',
     ];
 public function user(): BelongsTo
     {

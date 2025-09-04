@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('vendors', function (Blueprint $table) {
-            $table->enum('status',['pending','approved','rejected'])->default('pending');
-            $table->string('description')->nullable();
-            $table->binary('vendors_file')->nullable();
+           
 
         });
     }

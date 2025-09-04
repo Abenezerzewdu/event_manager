@@ -16,7 +16,11 @@ return new class extends Migration
             $table->string('name');
 
             $table->string('email')->unique();
-
+            
+            $table->string('phone')->nullable(); 
+             $table->boolean('is_admin')->default(false);
+             $table->enum('role', ['organizer', 'guest', 'vendor'])->nullable();
+        
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
@@ -36,6 +40,7 @@ return new class extends Migration
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
+            
         });
     }
 

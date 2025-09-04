@@ -15,12 +15,22 @@ return new class extends Migration
             $table->id();
             // Foreign key to link vendor to user
              $table->unsignedBigInteger('user_id');
-           $table->string('company_name');
-        $table->string('contact_email');
-        $table->string('phone');
-            $table->timestamps();
+             $table->string('company_name');
+             $table->string('contact_email');
+             $table->string('phone');
+             $table->string('address');
+             //admin approval status
+             $table->enum('status',['pending','approved','rejected'])->default('pending');
+            $table->string('description')->nullable();
+            $table->binary('vendors_file')->nullable();
+            //payment status
+            $table->enum('payment_status',['unpaid','paid','refunded'])->default('unpaid');
+            //payment package plan
+            $table->enum('plan',['basic','premium','elite']);
 
-                    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+             $table->timestamps();
+
+             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
         });
     }
