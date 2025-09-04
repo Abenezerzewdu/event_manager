@@ -11,7 +11,7 @@ class Review extends Model
         'comment',
         'user_id',
         'vendor_id',
-        'event_id'
+        // 'event_id'
     ];
 
     protected $casts = [
@@ -28,8 +28,8 @@ class Review extends Model
         return $this->belongsTo(Vendor::class);
     }
 
-    public function event()
-    {
-        return $this->belongsTo(Event::class);
-    }
+    // public function event()
+    // {
+    //     return $this->belongsTo(Event::class);
+    // }
 }

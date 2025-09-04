@@ -17,8 +17,10 @@ if (token) {
     console.error("CSRF token not found!");
 }
 
+
 axios.defaults.withCredentials = true; //  send cookies with requests
 window.axios = axios; // optional, if we want axios globally
+
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 

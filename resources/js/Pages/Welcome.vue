@@ -1,39 +1,13 @@
-<script setup>
-import { Head, Link } from "@inertiajs/vue3";
-
-defineProps({
-    canLogin: {
-        type: Boolean,
-    },
-    canRegister: {
-        type: Boolean,
-    },
-    laravelVersion: {
-        type: String,
-        required: true,
-    },
-    phpVersion: {
-        type: String,
-        required: true,
-    },
-});
-
-function handleImageError() {
-    document.getElementById("screenshot-container")?.classList.add("!hidden");
-    document.getElementById("docs-card")?.classList.add("!row-span-1");
-    document.getElementById("docs-card-content")?.classList.add("!flex-row");
-    document.getElementById("background")?.classList.add("!hidden");
-}
-</script>
 
 <template>
+  <div>
     <Head title="Welcome" />
     <div class="p-0 m-0">
         <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
             <header
-                class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3 bg-gray-800 m-0"
+                class="grid items-center grid-cols-2 gap-2 py-10 m-0 bg-gray-800 lg:grid-cols-3"
             >
-                <nav v-if="canLogin" class="-mx-3 flex flex-1 justify-end">
+                <nav v-if="canLogin" class="flex justify-end flex-1 -mx-3">
                     <Link
                         v-if="$page.props.auth.user"
                         :href="route('dashboard')"
@@ -62,4 +36,32 @@ function handleImageError() {
             </header>
         </div>
     </div>
+</div>
 </template>
+<script setup>
+import { Head } from "@inertiajs/vue3";
+import { Link } from "@inertiajs/vue3";
+defineProps({
+    canLogin: {
+        type: Boolean,
+    },
+    canRegister: {
+        type: Boolean,
+    },
+    laravelVersion: {
+        type: String,
+        required: true,
+    },
+    phpVersion: {
+        type: String,
+        required: true,
+    },
+});
+
+function handleImageError() {
+    document.getElementById("screenshot-container")?.classList.add("!hidden");
+    document.getElementById("docs-card")?.classList.add("!row-span-1");
+    document.getElementById("docs-card-content")?.classList.add("!flex-row");
+    document.getElementById("background")?.classList.add("!hidden");
+}
+</script>

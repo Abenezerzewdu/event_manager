@@ -13,13 +13,13 @@
                 <input
                     v-model="form.name"
                     type="text"
-                    class="border p-2 w-full"
+                    class="w-full p-2 border"
                 />
             </div>
 
             <div class="mb-4">
                 <label>Category:</label>
-                <select v-model="form.category" class="border p-2 w-full">
+                <select v-model="form.category" class="w-full p-2 border">
                     <option value="">Select Category</option>
                     <option value="planned">Planned</option>
                     <option value="unplanned">Unplanned</option>
@@ -28,7 +28,7 @@
 
             <button
                 type="submit"
-                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+                class="px-4 py-2 text-white transition bg-blue-500 rounded hover:bg-blue-600"
                 :disabled="form.processing"
             >
                 <span v-if="form.processing">Submitting...</span>
@@ -57,6 +57,6 @@ function submitForm() {
         return;
     }
 
-    Inertia.post("/eventtype/store", form);
+    Inertia.post("/eventtype/index", form);
 }
 </script>

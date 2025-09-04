@@ -17,7 +17,7 @@ return new class extends Migration
            $table->id();
            $table->unsignedBigInteger('user_id');   // reviewer
            $table->unsignedBigInteger('vendor_id'); // reviewed vendor
-           $table->text('review');                  // honest review text
+           $table->text('comment');                  // honest review text
            $table->unsignedTinyInteger('rating');   // rating out of 5
          $table->timestamps();
 
@@ -25,6 +25,7 @@ return new class extends Migration
            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
           $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('cascade');
+        //    $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
     });
     }
 
