@@ -9,9 +9,9 @@
         </div>
         <h1 class="text-3xl font-bold text-gray-800">Our Services</h1>
         <p class="mt-2 text-gray-600">Browse our complete catalog of services</p>
-        
+
         <!-- Add New Service Button -->
-        <button 
+        <button
           @click="openAddModal()"
           class="inline-flex items-center px-4 py-2 mt-6 text-white transition-all rounded-lg bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
         >
@@ -33,7 +33,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="p-4 bg-white rounded-lg shadow">
           <div class="flex items-center">
             <div class="p-3 bg-green-100 rounded-full">
@@ -45,7 +45,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="p-4 bg-white rounded-lg shadow">
           <div class="flex items-center">
             <div class="p-3 bg-purple-100 rounded-full">
@@ -57,7 +57,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="p-4 bg-white rounded-lg shadow">
           <div class="flex items-center">
             <div class="p-3 bg-yellow-100 rounded-full">
@@ -79,18 +79,18 @@
               <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 <i class="text-gray-400 fa-solid fa-magnifying-glass"></i>
               </div>
-              <input 
-                v-model="searchQuery" 
-                type="text" 
-                placeholder="Search services..." 
+              <input
+                v-model="searchQuery"
+                type="text"
+                placeholder="Search services..."
                 class="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
             </div>
           </div>
-          
+
           <div class="flex flex-wrap justify-center space-x-2">
-            <button 
-              v-for="category in availableCategories" 
+            <button
+              v-for="category in availableCategories"
               :key="category"
               @click="toggleCategory(category)"
               class="px-3 py-1 mb-2 text-sm font-medium transition-colors rounded-full"
@@ -107,9 +107,9 @@
 
       <!-- Services Grid -->
       <div v-if="filteredServices.length > 0" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div 
-          v-for="service in filteredServices" 
-          :key="service.id" 
+        <div
+          v-for="service in filteredServices"
+          :key="service.id"
           class="overflow-hidden transition-all duration-300 bg-white rounded-lg shadow service-card hover:shadow-lg"
         >
           <div class="p-6">
@@ -141,20 +141,20 @@
 
             <!-- Action Buttons -->
             <div class="flex mt-6 space-x-2">
-              <button 
-                @click="viewService(service.id)" 
+              <button
+                @click="viewService(service.id)"
                 class="flex-1 px-4 py-2 text-center text-white transition-colors bg-blue-500 rounded-lg hover:bg-blue-600"
               >
                 <i class="mr-1 fa-solid fa-eye"></i> View
               </button>
-              <button 
-                @click="openEditModal(service)" 
+              <button
+                @click="openEditModal(service)"
                 class="flex-1 px-4 py-2 text-center text-gray-700 transition-colors bg-gray-100 rounded-lg hover:bg-gray-200"
               >
                 <i class="mr-1 fa-solid fa-pen"></i> Edit
               </button>
-              <button 
-                @click="deleteService(service.id)" 
+              <button
+                @click="deleteService(service.id)"
                 class="flex-1 px-4 py-2 text-center text-white transition-colors bg-red-500 rounded-lg hover:bg-red-600"
               >
                 <i class="mr-1 fa-solid fa-trash"></i> Delete
@@ -171,7 +171,7 @@
         </div>
         <h3 class="text-lg font-medium text-gray-900">No services found</h3>
         <p class="mt-2 text-gray-600">Try adjusting your search or filter to find what you're looking for.</p>
-        <button 
+        <button
           @click="openAddModal()"
           class="inline-flex items-center px-4 py-2 mt-4 text-white transition-all rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
         >
@@ -217,10 +217,10 @@
             <div class="space-y-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700">Service Name</label>
-                <input 
-                  v-model="newService.name" 
-                  type="text" 
-                  required 
+                <input
+                  v-model="newService.name"
+                  type="text"
+                  required
                   class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter service name"
                 >
@@ -228,10 +228,10 @@
 
               <div>
                 <label class="block text-sm font-medium text-gray-700">Description</label>
-                <textarea 
-                  v-model="newService.description" 
-                  required 
-                  rows="3" 
+                <textarea
+                  v-model="newService.description"
+                  required
+                  rows="3"
                   class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Describe the service"
                 ></textarea>
@@ -240,12 +240,12 @@
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700">Price ($)</label>
-                  <input 
-                    v-model.number="newService.price" 
-                    type="number" 
-                    step="0.01" 
-                    min="0" 
-                    required 
+                  <input
+                    v-model.number="newService.price"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    required
                     class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="0.00"
                   >
@@ -253,9 +253,9 @@
 
                 <div>
                   <label class="block text-sm font-medium text-gray-700">Category</label>
-                  <select 
-                    v-model="newService.category" 
-                    required 
+                  <select
+                    v-model="newService.category"
+                    required
                     class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">Select Category</option>
@@ -267,9 +267,9 @@
 
               <div>
                 <label class="block text-sm font-medium text-gray-700">Status</label>
-                <select 
-                  v-model="newService.status" 
-                  required 
+                <select
+                  v-model="newService.status"
+                  required
                   class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="active">Active</option>
@@ -279,15 +279,15 @@
             </div>
 
             <div class="flex justify-end mt-6 space-x-3">
-              <button 
-                type="button" 
-                @click="closeModal" 
+              <button
+                type="button"
+                @click="closeModal"
                 class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 Cancel
               </button>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
               >
                 Add Service
@@ -319,10 +319,10 @@
             <div class="space-y-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700">Service Name</label>
-                <input 
-                  v-model="editService.name" 
-                  type="text" 
-                  required 
+                <input
+                  v-model="editService.name"
+                  type="text"
+                  required
                   class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter service name"
                 >
@@ -330,10 +330,10 @@
 
               <div>
                 <label class="block text-sm font-medium text-gray-700">Description</label>
-                <textarea 
-                  v-model="editService.description" 
-                  required 
-                  rows="3" 
+                <textarea
+                  v-model="editService.description"
+                  required
+                  rows="3"
                   class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Describe the service"
                 ></textarea>
@@ -342,12 +342,12 @@
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700">Price ($)</label>
-                  <input 
-                    v-model.number="editService.price" 
-                    type="number" 
-                    step="0.01" 
-                    min="0" 
-                    required 
+                  <input
+                    v-model.number="editService.price"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    required
                     class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="0.00"
                   >
@@ -355,9 +355,9 @@
 
                 <div>
                   <label class="block text-sm font-medium text-gray-700">Category</label>
-                  <select 
-                    v-model="editService.category" 
-                    required 
+                  <select
+                    v-model="editService.category"
+                    required
                     class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">Select Category</option>
@@ -369,9 +369,9 @@
 
               <div>
                 <label class="block text-sm font-medium text-gray-700">Status</label>
-                <select 
-                  v-model="editService.status" 
-                  required 
+                <select
+                  v-model="editService.status"
+                  required
                   class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="active">Active</option>
@@ -381,15 +381,15 @@
             </div>
 
             <div class="flex justify-end mt-6 space-x-3">
-              <button 
-                type="button" 
-                @click="closeModal" 
+              <button
+                type="button"
+                @click="closeModal"
                 class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 Cancel
               </button>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 Update Service
@@ -459,21 +459,21 @@ const averagePrice = computed(() => {
 
 const filteredServices = computed(() => {
   let result = services.value;
-  
+
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase();
-    result = result.filter(service => 
-      (service.name && service.name.toLowerCase().includes(query)) || 
+    result = result.filter(service =>
+      (service.name && service.name.toLowerCase().includes(query)) ||
       (service.description && service.description.toLowerCase().includes(query))
     );
   }
-  
+
   if (selectedCategories.value.length > 0) {
-    result = result.filter(service => 
+    result = result.filter(service =>
       selectedCategories.value.includes(service.category)
     );
   }
-  
+
   return result;
 });
 
@@ -577,19 +577,3 @@ watch(() => props.services, (newServices) => {
 }, { immediate: true });
 </script>
 
-<style scoped>
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.service-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.service-card:hover {
-  transform: translateY(-5px);
-}
-</style>

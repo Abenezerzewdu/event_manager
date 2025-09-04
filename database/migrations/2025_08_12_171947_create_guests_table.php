@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('phone');
             $table->unsignedBigInteger('event_id');
             $table->string('email')->nullable();
-        
+           $table->boolean('is_attending')->default(false);
             $table->timestamps();
 
             // Foreign key to link guest to event

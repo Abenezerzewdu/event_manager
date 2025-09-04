@@ -14,14 +14,49 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\VendorsController;
 use App\Http\Controllers\EventTypeController;
+
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+
+
 use App\Http\Controllers\EventServiceController;
 
-use
-App\Http\Controllers\Auth\AuthenticatedSessionController;
+
 
 Route::get('/vendor',function(){
+
     return Inertia::render('Vendor/index');
 });
+//debugging 419
+// Add this to any controller or create a test route
+Route::get('/debug-csrf', function () {
+    return response()->json([
+        'csrf_token' => csrf_token(),
+        'session_token' => session()->token(),
+        'session_id' => session()->getId(),
+        'session_driver' => config('session.driver'),
+    ]);
+});
+//venue test
+Route::get('/venue',function(){
+    return Inertia::render('Venue');
+});
+
+//dresses test
+Route::get('/dresses',function(){
+    return Inertia::render('Dresses');
+});
+
+//contact test
+Route::get('/contact',function(){
+    return Inertia::render('Contact');
+});
+
+//vendors test
+Route::get('/vendors',function(){
+    return Inertia::render('Vendors');
+});
+
+//admin only routes
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::prefix('eventtype')->controller(EventTypeController::class)->group(function () {
@@ -38,13 +73,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('EventType/Home', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('home');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -58,7 +93,9 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
+Route::get('/home',function(){
+    return Inertia::render('EventType/AppHeader');
+});
 
 Route::get('/services', [ServiceController::class, 'index'])->name('service.index');
 Route::get('/services/create', [ServiceController::class, 'create'])->name('service.create');
