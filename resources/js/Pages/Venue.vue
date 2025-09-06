@@ -1,41 +1,17 @@
 <template>
-    <AppHeader />
-    <div class="min-h-screen bg-white">
-        <!-- Search Section -->
-        <section class="bg-gray-50 py-8">
-            <div class="container mx-auto px-4">
-                <!-- Search Bar -->
-                <div
-                    class="flex flex-col md:flex-row items-stretch md:items-center space-y-3 md:space-y-0 md:space-x-4 mb-6"
-                >
-                    <button
-                        @click="showCategoryModal = true"
-                        class="flex items-center justify-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+    <div>
+        <AppHeader />
+        <div class="min-h-screen bg-white">
+            <!-- Search Section -->
+            <section class="py-8 bg-gray-50">
+                <div class="container px-4 mx-auto">
+                    <!-- Search Bar -->
+                    <div
+                        class="flex flex-col items-stretch mb-6 space-y-3 md:flex-row md:items-center md:space-y-0 md:space-x-4"
                     >
-                        <svg
-                            class="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16"
-                            ></path>
-                        </svg>
-                        <span>Kategori</span>
-                    </button>
-
-                    <div class="flex-1 flex">
-                        <input
-                            type="text"
-                            placeholder="Cari Venue atau Lokasi"
-                            class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-hati-pink focus:border-transparent"
-                        />
                         <button
-                            class="bg-hati-pink text-white px-4 md:px-6 py-2 rounded-r-lg hover:bg-pink-600 transition-colors"
+                            @click="showCategoryModal = true"
+                            class="flex items-center justify-center px-4 py-2 space-x-2 text-white transition-colors bg-blue-500 rounded-lg hover:bg-blue-600"
                         >
                             <svg
                                 class="w-5 h-5"
@@ -47,93 +23,23 @@
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
                                     stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                    d="M4 6h16M4 12h16M4 18h16"
                                 ></path>
                             </svg>
+                            <span>Kategori</span>
                         </button>
-                    </div>
 
-                    <button
-                        @click="showCalendar = true"
-                        class="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                    >
-                        <svg
-                            class="w-5 h-5 text-gray-600"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            ></path>
-                        </svg>
-                    </button>
-                </div>
-
-                <!-- Filter Tabs -->
-                <div
-                    class="flex space-x-3 md:space-x-6 border-b border-gray-200 overflow-x-auto"
-                >
-                    <button
-                        v-for="tab in filterTabs"
-                        :key="tab"
-                        :class="[
-                            'pb-3 px-1 text-sm font-medium border-b-2 transition-colors whitespace-nowrap',
-                            activeTab === tab
-                                ? 'border-hati-pink text-hati-pink'
-                                : 'border-transparent text-gray-500 hover:text-gray-700',
-                        ]"
-                        @click="activeTab = tab"
-                    >
-                        {{ tab }}
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Venue Grid -->
-        <section class="py-8">
-            <div class="container mx-auto px-4">
-                <div
-                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-                >
-                    <div
-                        v-for="venue in venues"
-                        :key="venue.id"
-                        class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-                    >
-                        <div class="relative">
-                            <img
-                                :src="venue.image"
-                                :alt="venue.name"
-                                class="w-full h-48 object-cover"
+                        <div class="flex flex-1">
+                            <input
+                                type="text"
+                                placeholder="Cari Venue atau Lokasi"
+                                class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-hati-pink focus:border-transparent"
                             />
-                            <span
-                                :class="[
-                                    'absolute top-3 left-3 px-2 py-1 text-xs font-medium text-white rounded',
-                                    venue.category === 'Outdoor'
-                                        ? 'bg-blue-500'
-                                        : venue.category === 'Indoor'
-                                        ? 'bg-yellow-500'
-                                        : 'bg-green-500',
-                                ]"
-                            >
-                                {{ venue.category }}
-                            </span>
-                        </div>
-
-                        <div class="p-4">
-                            <h3 class="font-semibold text-gray-900 mb-1">
-                                {{ venue.name }}
-                            </h3>
-                            <p
-                                class="text-sm text-gray-600 mb-2 flex items-center"
+                            <button
+                                class="px-4 py-2 text-white transition-colors rounded-r-lg bg-hati-pink md:px-6 hover:bg-pink-600"
                             >
                                 <svg
-                                    class="w-4 h-4 mr-1"
+                                    class="w-5 h-5"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -142,184 +48,279 @@
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                         stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                                     ></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <button
+                            @click="showCalendar = true"
+                            class="flex items-center justify-center px-4 py-2 space-x-2 transition-colors border border-gray-300 rounded-lg hover:bg-gray-50"
+                        >
+                            <svg
+                                class="w-5 h-5 text-gray-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                ></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Filter Tabs -->
+                    <div
+                        class="flex space-x-3 overflow-x-auto border-b border-gray-200 md:space-x-6"
+                    >
+                        <button
+                            v-for="tab in filterTabs"
+                            :key="tab"
+                            :class="[
+                                'pb-3 px-1 text-sm font-medium border-b-2 transition-colors whitespace-nowrap',
+                                activeTab === tab
+                                    ? 'border-hati-pink text-hati-pink'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700',
+                            ]"
+                            @click="activeTab = tab"
+                        >
+                            {{ tab }}
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Venue Grid -->
+            <section class="py-8">
+                <div class="container px-4 mx-auto">
+                    <div
+                        class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4"
+                    >
+                        <div
+                            v-for="venue in venues"
+                            :key="venue.id"
+                            class="overflow-hidden transition-shadow bg-white shadow-md rounded-xl hover:shadow-lg"
+                        >
+                            <div class="relative">
+                                <img
+                                    :src="venue.image"
+                                    :alt="venue.name"
+                                    class="object-cover w-full h-48"
+                                />
+                                <span
+                                    :class="[
+                                        'absolute top-3 left-3 px-2 py-1 text-xs font-medium text-white rounded',
+                                        venue.category === 'Outdoor'
+                                            ? 'bg-blue-500'
+                                            : venue.category === 'Indoor'
+                                            ? 'bg-yellow-500'
+                                            : 'bg-green-500',
+                                    ]"
+                                >
+                                    {{ venue.category }}
+                                </span>
+                            </div>
+
+                            <div class="p-4">
+                                <h3 class="mb-1 font-semibold text-gray-900">
+                                    {{ venue.name }}
+                                </h3>
+                                <p
+                                    class="flex items-center mb-2 text-sm text-gray-600"
+                                >
+                                    <svg
+                                        class="w-4 h-4 mr-1"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                        ></path>
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                        ></path>
+                                    </svg>
+                                    {{ venue.location }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Category Modal -->
+            <div
+                v-if="showCategoryModal"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+                @click="showCategoryModal = false"
+            >
+                <div
+                    class="w-full max-w-md p-6 mx-4 bg-white rounded-xl"
+                    @click.stop
+                >
+                    <h3 class="mb-4 text-lg font-semibold">Pilih Kategori</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button
+                            v-for="category in categories"
+                            :key="category.name"
+                            :class="[
+                                'flex items-center space-x-3 p-3 border rounded-lg transition-colors text-left',
+                                selectedCategory === category.name
+                                    ? 'border-hati-pink bg-hati-pink bg-opacity-10'
+                                    : 'border-gray-200 hover:bg-gray-50',
+                            ]"
+                            @click="selectCategory(category)"
+                        >
+                            <div
+                                :class="[
+                                    'w-8 h-8 rounded flex items-center justify-center',
+                                    selectedCategory === category.name
+                                        ? 'bg-hati-pink bg-opacity-20'
+                                        : 'bg-blue-100',
+                                ]"
+                            >
+                                <svg
+                                    :class="[
+                                        'w-5 h-5',
+                                        selectedCategory === category.name
+                                            ? 'text-hati-pink'
+                                            : 'text-blue-600',
+                                    ]"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
                                     <path
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                         stroke-width="2"
-                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                                     ></path>
                                 </svg>
-                                {{ venue.location }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Category Modal -->
-        <div
-            v-if="showCategoryModal"
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            @click="showCategoryModal = false"
-        >
-            <div
-                class="bg-white rounded-xl p-6 max-w-md w-full mx-4"
-                @click.stop
-            >
-                <h3 class="text-lg font-semibold mb-4">Pilih Kategori</h3>
-                <div class="grid grid-cols-2 gap-3">
-                    <button
-                        v-for="category in categories"
-                        :key="category.name"
-                        :class="[
-                            'flex items-center space-x-3 p-3 border rounded-lg transition-colors text-left',
-                            selectedCategory === category.name
-                                ? 'border-hati-pink bg-hati-pink bg-opacity-10'
-                                : 'border-gray-200 hover:bg-gray-50',
-                        ]"
-                        @click="selectCategory(category)"
-                    >
-                        <div
-                            :class="[
-                                'w-8 h-8 rounded flex items-center justify-center',
-                                selectedCategory === category.name
-                                    ? 'bg-hati-pink bg-opacity-20'
-                                    : 'bg-blue-100',
-                            ]"
-                        >
-                            <svg
+                            </div>
+                            <span
                                 :class="[
-                                    'w-5 h-5',
+                                    'text-sm',
                                     selectedCategory === category.name
-                                        ? 'text-hati-pink'
-                                        : 'text-blue-600',
+                                        ? 'font-bold text-hati-pink'
+                                        : 'font-medium',
                                 ]"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+                                >{{ category.name }}</span
                             >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                                ></path>
-                            </svg>
-                        </div>
-                        <span
-                            :class="[
-                                'text-sm',
-                                selectedCategory === category.name
-                                    ? 'font-bold text-hati-pink'
-                                    : 'font-medium',
-                            ]"
-                            >{{ category.name }}</span
-                        >
-                    </button>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Calendar Modal -->
-        <div
-            v-if="showCalendar"
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            @click="showCalendar = false"
-        >
+            <!-- Calendar Modal -->
             <div
-                class="bg-white rounded-xl p-6 max-w-sm w-full mx-4"
-                @click.stop
+                v-if="showCalendar"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+                @click="showCalendar = false"
             >
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-semibold">
-                        {{ currentMonthName }} {{ currentYear }}
-                    </h3>
-                    <div class="flex space-x-2">
-                        <button
-                            @click="previousMonth"
-                            class="p-1 hover:bg-gray-100 rounded"
-                        >
-                            <svg
-                                class="w-5 h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+                <div
+                    class="w-full max-w-sm p-6 mx-4 bg-white rounded-xl"
+                    @click.stop
+                >
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">
+                            {{ currentMonthName }} {{ currentYear }}
+                        </h3>
+                        <div class="flex space-x-2">
+                            <button
+                                @click="previousMonth"
+                                class="p-1 rounded hover:bg-gray-100"
                             >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M15 19l-7-7 7-7"
-                                ></path>
-                            </svg>
-                        </button>
-                        <button
-                            @click="nextMonth"
-                            class="p-1 hover:bg-gray-100 rounded"
-                        >
-                            <svg
-                                class="w-5 h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+                                <svg
+                                    class="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M15 19l-7-7 7-7"
+                                    ></path>
+                                </svg>
+                            </button>
+                            <button
+                                @click="nextMonth"
+                                class="p-1 rounded hover:bg-gray-100"
                             >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M9 5l7 7-7 7"
-                                ></path>
-                            </svg>
-                        </button>
+                                <svg
+                                    class="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M9 5l7 7-7 7"
+                                    ></path>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="grid grid-cols-7 gap-1 text-center text-sm">
-                    <div
-                        v-for="day in [
-                            'Su',
-                            'Mo',
-                            'Tu',
-                            'We',
-                            'Th',
-                            'Fr',
-                            'Sa',
-                        ]"
-                        :key="day"
-                        class="p-2 font-medium text-gray-500"
-                    >
-                        {{ day }}
-                    </div>
-                    <div
-                        v-for="(date, index) in calendarDates"
-                        :key="index"
-                        :class="[
-                            'p-2 rounded cursor-pointer transition-colors',
-                            date ? 'hover:bg-gray-100' : '',
-                            selectedDate === date && date
-                                ? 'bg-hati-pink text-white'
-                                : '',
-                            date === today &&
-                            currentMonth === new Date().getMonth() &&
-                            currentYear === new Date().getFullYear()
-                                ? 'bg-blue-100 font-semibold'
-                                : '',
-                        ]"
-                    >
-                        {{ date || "" }}
+                    <div class="grid grid-cols-7 gap-1 text-sm text-center">
+                        <div
+                            v-for="day in [
+                                'Su',
+                                'Mo',
+                                'Tu',
+                                'We',
+                                'Th',
+                                'Fr',
+                                'Sa',
+                            ]"
+                            :key="day"
+                            class="p-2 font-medium text-gray-500"
+                        >
+                            {{ day }}
+                        </div>
+                        <div
+                            v-for="(date, index) in calendarDates"
+                            :key="index"
+                            :class="[
+                                'p-2 rounded cursor-pointer transition-colors',
+                                date ? 'hover:bg-gray-100' : '',
+                                selectedDate === date && date
+                                    ? 'bg-hati-pink text-white'
+                                    : '',
+                                date === today &&
+                                currentMonth === new Date().getMonth() &&
+                                currentYear === new Date().getFullYear()
+                                    ? 'bg-blue-100 font-semibold'
+                                    : '',
+                            ]"
+                        >
+                            {{ date || "" }}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
-
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import AppHeader from "@/Components/AppHeader.vue";
+// import { AppHeader } from "../Components/AppHeader.vue";
 const activeTab = ref("Di sekitar saya");
 const showCategoryModal = ref(false);
 const showCalendar = ref(false);

@@ -74,7 +74,6 @@
 
 <script setup>
 import { Link, router } from '@inertiajs/vue3';
-
 defineProps({
   message: String,
   users: Array

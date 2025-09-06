@@ -145,7 +145,6 @@
 <script setup>
 import { useForm, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
-
 const props = defineProps({
   vendor: Object,
   users: Array,

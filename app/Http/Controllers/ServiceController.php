@@ -10,50 +10,46 @@ class ServiceController extends Controller
 {
     public function index()
     {
-        return Inertia::render('service/Index', [
-            'message' => 'Hello from ServiceController!',
-            'services' => Service::all()
+        $services = Service::select('id', 'name', 'description', 'price', 'category', 'status', 'created_at')->get();
+        return Inertia::render('Service/Index', [
+            'services' => $services,
         ]);
     }
 
     public function create()
     {
-        return Inertia::render('service/Create', [
-            'message' => 'Create a new service',
-        ]);
+        return Inertia::render('Service/Create');
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'category' => 'required|string|in:planned,unplanned',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0|max:999999.99',
+            'category' => 'required|in:planned,unplanned',
+            'status' => 'required|in:active,inactive',
         ]);
 
         $service = Service::create($validated);
 
-        return redirect()->route('service.show', $service->id)
-                         ->with('success', 'Service created successfully!');
+        return redirect()->back()->with('services', Service::select('id', 'name', 'description', 'price', 'category', 'status', 'created_at')->get())
+                               ->with('success', 'Service created successfully!');
     }
 
     public function show($id)
     {
         $service = Service::findOrFail($id);
-
-        return Inertia::render('service/Show', [
-            'service' => $service
+        return Inertia::render('Service/Show', [
+            'service' => $service,
         ]);
     }
 
     public function edit($id)
     {
         $service = Service::findOrFail($id);
-
-        return Inertia::render('service/Edit', [
+        return Inertia::render('Service/Edit', [
             'service' => $service,
-            'message' => 'Edit Service'
         ]);
     }
 
@@ -61,16 +57,17 @@ class ServiceController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'category' => 'required|string|in:planned,unplanned',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0|max:999999.99',
+            'category' => 'required|in:planned,unplanned',
+            'status' => 'required|in:active,inactive',
         ]);
 
         $service = Service::findOrFail($id);
         $service->update($validated);
 
-        return redirect()->route('service.index', $service->id)
-                         ->with('success', 'Service updated successfully!');
+        return redirect()->back()->with('services', Service::select('id', 'name', 'description', 'price', 'category', 'status', 'created_at')->get())
+                               ->with('success', 'Service updated successfully!');
     }
 
     public function destroy($id)
@@ -78,7 +75,7 @@ class ServiceController extends Controller
         $service = Service::findOrFail($id);
         $service->delete();
 
-        return redirect()->route('service.index')
-                         ->with('success', 'Service deleted successfully!');
+        return redirect()->back()->with('services', Service::select('id', 'name', 'description', 'price', 'category', 'status', 'created_at')->get())
+                               ->with('success', 'Service deleted successfully!');
     }
 }

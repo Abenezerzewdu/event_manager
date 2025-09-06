@@ -1,4 +1,5 @@
 <template>
+
   <div class="min-h-screen py-8 bg-gray-50">
     <div class="max-w-4xl px-4 mx-auto">
       <div class="overflow-hidden bg-white shadow-lg rounded-xl">
@@ -34,7 +35,7 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
-import Sidebar from '@/Components/Sidebar.vue';
+
 const props = defineProps(['reviews']);
 const isAuthenticated = computed(() => !!window.Laravel?.user);
 </script>

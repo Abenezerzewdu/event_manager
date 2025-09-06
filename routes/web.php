@@ -97,15 +97,13 @@ Route::get('/home',function(){
     return Inertia::render('EventType/AppHeader');
 });
 
-Route::prefix('service')->controller(ServiceController::class)->group(function () {
-    Route::get('/', 'index')->name('service.index');
-    Route::get('/create', 'create')->name('service.create');
-    Route::post('/store', 'store')->name('service.store');
-    Route::get('/{id}/edit', 'edit')->name('service.edit');
-    Route::get('/{id}', 'show')->name('service.show');
-    Route::put('/{id}', 'update')->name('service.update');
-    Route::delete('/{id}', 'destroy')->name('service.destroy');
-});
+Route::get('/services', [ServiceController::class, 'index'])->name('service.index');
+Route::get('/services/create', [ServiceController::class, 'create'])->name('service.create');
+Route::post('/services', [ServiceController::class, 'store'])->name('service.store');
+Route::get('/services/{id}', [ServiceController::class, 'show'])->name('service.show');
+Route::get('/services/{id}/edit', [ServiceController::class, 'edit'])->name('service.edit');
+Route::put('/services/{id}', [ServiceController::class, 'update'])->name('service.update');
+Route::delete('/services/{id}', [ServiceController::class, 'destroy'])->name('service.destroy');
 
 
 Route::prefix('user')->controller(UserController::class)->group(function () {

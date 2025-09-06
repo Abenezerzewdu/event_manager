@@ -102,7 +102,6 @@
 
 <script setup>
 import { useForm, Link, router } from '@inertiajs/vue3';
-
 const props = defineProps({
   vendors: Array,
   services: Array,
