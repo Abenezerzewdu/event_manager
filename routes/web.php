@@ -15,10 +15,12 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\VendorsController;
 use App\Http\Controllers\EventTypeController;
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-
-
 use App\Http\Controllers\EventServiceController;
+
+
+use App\Http\Controllers\VendorDashboardController;
+
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 
 
@@ -174,6 +176,12 @@ Route::prefix('guest')->name('guest.')->controller(GuestController::class)->grou
 Route::get('/reviews', [ReviewController::class, 'index'])->name('review.index');
 Route::get('/reviews/create', [ReviewController::class, 'create'])->name('review.create');
 Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store');
+
+
+
+// Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () {
+//     Route::get('/dashboard', [VendorDashboardController::class, 'index'])->name('vendor.dashboard');
+// });
 
 
 require __DIR__.'/auth.php';
