@@ -57,6 +57,6 @@ function submitForm() {
         return;
     }
 
-    Inertia.post("/eventtype/index", form);
+    Inertia.post("/eventtype/store", form);
 }
 </script>
