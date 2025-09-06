@@ -15,8 +15,6 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\VendorsController;
 use App\Http\Controllers\EventTypeController;
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-
 
 use App\Http\Controllers\EventServiceController;
 
@@ -59,7 +57,12 @@ Route::get('/vendors',function(){
 //admin only routes
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::prefix('eventtype')->controller(EventTypeController::class)->group(function () {
+    
+
+});
+
+//under admin route
+Route::prefix('eventtype')->controller(EventTypeController::class)->group(function () {
     Route::get('/', 'index')->name('eventtype.index');
     Route::get('/create', 'create')->name('eventtype.create');
     Route::post('/store', 'store')->name('eventtype.store');
@@ -69,9 +72,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/{id}', 'destroy')->name('eventtype.destroy');
 
 });
-
-});
-
 Route::get('/', function () {
     return Inertia::render('EventType/Home', [
         'canLogin' => Route::has('login'),
@@ -118,18 +118,23 @@ Route::prefix('user')->controller(UserController::class)->group(function () {
     Route::delete('/{id}', 'destroy')->name('user.destroy');
 });
 
+//under organizer role should should be authed 
 Route::prefix('event')->controller(EventController::class)->group(function () {
+    //under admin role since it have got all events view
     Route::get('/', 'index')->name('event.index');
+    //both admin and organizer can access this route
     Route::get('/create', 'create')->name('event.create');
     Route::post('/store', 'store')->name('event.store');
+//admin can get all event's show but for organizer the user should only see and edit what they creted
     Route::get('/{id}', 'show')->name('event.show');
     Route::get('/{id}/edit', 'edit')->name('event.edit');
     Route::put('/{id}', 'update')->name('event.update');
     Route::delete('/{id}', 'destroy')->name('event.destroy');
 });
 
-
+//under admin role
 Route::prefix('vendor')->controller(VendorsController::class)->group(function () {
+    //under admin role since it shows all vendors and also lets vendor creation registered
     Route::get('/', 'index')->name('vendor.index');
     Route::get('/create', 'create')->name('vendor.create');
     Route::post('/store', 'store')->name('vendor.store');
@@ -140,29 +145,29 @@ Route::prefix('vendor')->controller(VendorsController::class)->group(function ()
 });
 
 
+//background route not even needed
+// Route::prefix('event-service')->name('event-service.')->group(function () {
+//     Route::get('/', [EventServiceController::class, 'index'])->name('index');
+//     Route::get('/create', [EventServiceController::class, 'create'])->name('create');
+//     Route::post('/', [EventServiceController::class, 'store'])->name('store');
+//     Route::get('/{id}', [EventServiceController::class, 'show'])->name('show');
+//     Route::get('/{id}/edit', [EventServiceController::class, 'edit'])->name('edit');
+//     Route::put('/{id}', [EventServiceController::class, 'update'])->name('update');
+//     Route::delete('/{id}', [EventServiceController::class, 'destroy'])->name('destroy');
+// });
 
-Route::prefix('event-service')->name('event-service.')->group(function () {
-    Route::get('/', [EventServiceController::class, 'index'])->name('index');
-    Route::get('/create', [EventServiceController::class, 'create'])->name('create');
-    Route::post('/', [EventServiceController::class, 'store'])->name('store');
-    Route::get('/{id}', [EventServiceController::class, 'show'])->name('show');
-    Route::get('/{id}/edit', [EventServiceController::class, 'edit'])->name('edit');
-    Route::put('/{id}', [EventServiceController::class, 'update'])->name('update');
-    Route::delete('/{id}', [EventServiceController::class, 'destroy'])->name('destroy');
-});
 
-
-
-Route::prefix('vendor-service')->name('vendor-service.')->group(function () {
-    Route::get('/', [\App\Http\Controllers\VendorServiceController::class, 'index'])->name('index');
-    Route::get('/create', [\App\Http\Controllers\VendorServiceController::class, 'create'])->name('create');
-    Route::post('/', [\App\Http\Controllers\VendorServiceController::class, 'store'])->name('store');
-    Route::get('/{vendorService}', [\App\Http\Controllers\VendorServiceController::class, 'show'])->name('show');
-    Route::get('/{vendorService}/edit', [\App\Http\Controllers\VendorServiceController::class, 'edit'])->name('edit');
-    Route::put('/{vendorService}', [\App\Http\Controllers\VendorServiceController::class, 'update'])->name('update');
-    Route::delete('/{vendorService}', [\App\Http\Controllers\VendorServiceController::class, 'destroy'])->name('destroy');
-});
-
+//
+// Route::prefix('vendor-service')->name('vendor-service.')->group(function () {
+//     Route::get('/', [\App\Http\Controllers\VendorServiceController::class, 'index'])->name('index');
+//     Route::get('/create', [\App\Http\Controllers\VendorServiceController::class, 'create'])->name('create');
+//     Route::post('/', [\App\Http\Controllers\VendorServiceController::class, 'store'])->name('store');
+//     Route::get('/{vendorService}', [\App\Http\Controllers\VendorServiceController::class, 'show'])->name('show');
+//     Route::get('/{vendorService}/edit', [\App\Http\Controllers\VendorServiceController::class, 'edit'])->name('edit');
+//     Route::put('/{vendorService}', [\App\Http\Controllers\VendorServiceController::class, 'update'])->name('update');
+//     Route::delete('/{vendorService}', [\App\Http\Controllers\VendorServiceController::class, 'destroy'])->name('destroy');
+// });
+//under organizer and admin role
 Route::prefix('guest')->name('guest.')->controller(GuestController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/create', 'create')->name('create');

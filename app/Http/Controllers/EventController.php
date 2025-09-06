@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Inertia\Inertia;
 use App\Models\Event;
 use App\Models\EventType;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -35,12 +36,15 @@ class EventController extends Controller
             'description' => 'nullable|string',
             'event_date' => 'required|date|after_or_equal:today',
             'location' => 'required|string|max:255',
-            'budget' => 'required|numeric|min:0',
-            'user_id' => 'required|integer|exists:users,id',
+            'budget' => 'required|numeric|min:0', 
             'event_type_id' => 'required|integer|exists:event_types,id',
-            'is_planned' => 'required|boolean',
+            'status' => 'required|string',
         ]);
 
+        
+        // Attach logged in user
+    $validated['user_id'] = Auth::id();
+    
         $event = Event::create($validated);
 
         return redirect()->route('event.show', $event->id)

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->unsignedBigInteger('event_type_id');
             $table->date('event_date');
-            $table->boolean('is_planned')->default(true);
+            $table->enum('status', ['pre-planning', 'planning', 'completped'])->nullable();
             $table->text('description')->nullable();
             $table->string('location');
             $table->decimal('budget', 10, 2)->default(0.00);

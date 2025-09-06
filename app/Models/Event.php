@@ -10,7 +10,7 @@ class Event extends Model
         'title',
         'description',
         'event_date',
-        'is_planned',
+        'status',
         'location',
         'budget',
         'user_id',
