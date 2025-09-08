@@ -1,90 +1,140 @@
 <template>
-  <div class="p-6">
-    <h1>{{ message }}</h1>
+    <div class="p-6">
+        <h1 class="text-2xl font-bold mb-6">{{ message }}</h1>
 
-    <form @submit.prevent="submitForm" class="max-w-md mx-auto mt-6">
-      <div class="mb-4">
-        <label>Name:</label>
-        <input v-model="form.name" type="text" class="w-full p-2 border"/>
-      </div>
+        <form
+            @submit.prevent="submitForm"
+            class="max-w-md mx-auto mt-6 space-y-4"
+        >
+            <!-- Name -->
+            <div>
+                <label class="block font-medium">Name:</label>
+                <input
+                    v-model="form.name"
+                    type="text"
+                    class="w-full p-2 border rounded"
+                />
+                <span v-if="form.errors.name" class="text-red-500 text-sm">
+                    {{ form.errors.name }}
+                </span>
+            </div>
 
-      <div class="mb-4">
-        <label>Email:</label>
-        <input v-model="form.email" type="email" class="w-full p-2 border"/>
-      </div>
+            <!-- Email -->
+            <div>
+                <label class="block font-medium">Email:</label>
+                <input
+                    v-model="form.email"
+                    type="email"
+                    class="w-full p-2 border rounded"
+                />
+                <span v-if="form.errors.email" class="text-red-500 text-sm">
+                    {{ form.errors.email }}
+                </span>
+            </div>
 
-      <div class="mb-4">
-        <label>Password:</label>
-        <input v-model="form.password" type="password" class="w-full p-2 border"/>
-      </div>
+            <!-- Password -->
+            <div>
+                <label class="block font-medium">Password:</label>
+                <input
+                    v-model="form.password"
+                    type="password"
+                    class="w-full p-2 border rounded"
+                />
+                <span v-if="form.errors.password" class="text-red-500 text-sm">
+                    {{ form.errors.password }}
+                </span>
+            </div>
 
-      <div class="mb-4">
-        <label>Confirm Password:</label>
-        <input v-model="form.password_confirmation" type="password" class="w-full p-2 border"/>
-      </div>
+            <!-- Confirm Password -->
+            <div>
+                <label class="block font-medium">Confirm Password:</label>
+                <input
+                    v-model="form.password_confirmation"
+                    type="password"
+                    class="w-full p-2 border rounded"
+                />
+                <span
+                    v-if="form.errors.password_confirmation"
+                    class="text-red-500 text-sm"
+                >
+                    {{ form.errors.password_confirmation }}
+                </span>
+            </div>
 
-      <div class="mb-4">
-        <label>Phone:</label>
-        <input v-model="form.phone" type="text" class="w-full p-2 border"/>
-      </div>
+            <!-- Phone -->
+            <div>
+                <label class="block font-medium">Phone:</label>
+                <input
+                    v-model="form.phone"
+                    type="text"
+                    class="w-full p-2 border rounded"
+                />
+                <span v-if="form.errors.phone" class="text-red-500 text-sm">
+                    {{ form.errors.phone }}
+                </span>
+            </div>
 
-      <div class="mb-4">
-        <label>Role:</label>
-        <input v-model="form.role" type="text" class="w-full p-2 border"/>
-      </div>
+            <!-- Role -->
+            <div>
+                <label class="block font-medium">Role:</label>
+                <input
+                    v-model="form.role"
+                    type="text"
+                    class="w-full p-2 border rounded"
+                />
+                <span v-if="form.errors.role" class="text-red-500 text-sm">
+                    {{ form.errors.role }}
+                </span>
+            </div>
 
-      <div class="mb-4">
-        <label>Admin:</label>
-        <input type="checkbox" v-model="form.is_admin" class="mr-2"/> Yes
-      </div>
+            <!-- Admin -->
+            <div>
+                <label class="block font-medium">Admin:</label>
+                <input type="checkbox" v-model="form.is_admin" class="mr-2" />
+                Yes
+                <span v-if="form.errors.is_admin" class="text-red-500 text-sm">
+                    {{ form.errors.is_admin }}
+                </span>
+            </div>
 
-      <button type="submit" class="px-4 py-2 text-white bg-blue-500 rounded" :disabled="form.processing">
-        <span v-if="form.processing">Submitting...</span>
-        <span v-else>Submit</span>
-      </button>
-    </form>
-  </div>
+            <!-- Submit -->
+            <button
+                type="submit"
+                class="px-4 py-2 text-white bg-blue-500 rounded"
+                :disabled="form.processing"
+            >
+                <span v-if="form.processing">Submitting...</span>
+                <span v-else>Submit</span>
+            </button>
+        </form>
+    </div>
 </template>
 
 <script setup>
 import { useForm } from "@inertiajs/vue3";
+
 const props = defineProps({
-  user: {
-    type: Object,
-    required: true,
-  },
-  message: {
-    type: String,
-    default: "Edit User",
-  },
-  errors: Object,
+    message: {
+        type: String,
+        default: "Create User",
+    },
 });
 
 const form = useForm({
-  _method: "put",
-  name: props.user.name || "",
-  email: props.user.email || "",
-  password: "",
-  password_confirmation: "",
-  phone: props.user.phone || "",
-  is_admin: props.user.is_admin || false,
-  role: props.user.role || "",
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+    phone: "",
+    is_admin: false,
+    role: "",
 });
 
 const submitForm = () => {
-  // Explicitly set the URL to ensure it targets the update route
-  form.put(`/user/${props.user.id}`, {
-    // Preserve the current page's data and method spoofing
-    preserveScroll: true,
-    onError: (errors) => {
-      console.log("Validation errors:", errors);
-      form.setError(errors);
-    },
-    onSuccess: () => {
-      console.log("User updated successfully");
-      // Optionally redirect to the index page
-      // form.visit(route('user.index'));
-    },
-  });
+    form.post(route("user.store"), {
+        onSuccess: () => {
+            console.log("User created successfully");
+        },
+    });
 };
 </script>

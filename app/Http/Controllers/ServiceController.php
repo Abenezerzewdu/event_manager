@@ -66,8 +66,8 @@ class ServiceController extends Controller
         $service = Service::findOrFail($id);
         $service->update($validated);
 
-        return redirect()->back()->with('services', Service::select('id', 'name', 'description', 'price', 'category', 'status', 'created_at')->get())
-                               ->with('success', 'Service updated successfully!');
+           return Inertia::location(route('service.index', $id));
+
     }
 
     public function destroy($id)
@@ -75,7 +75,6 @@ class ServiceController extends Controller
         $service = Service::findOrFail($id);
         $service->delete();
 
-        return redirect()->back()->with('services', Service::select('id', 'name', 'description', 'price', 'category', 'status', 'created_at')->get())
-                               ->with('success', 'Service deleted successfully!');
+        return Inertia::location(route('service.index', $id));
     }
 }

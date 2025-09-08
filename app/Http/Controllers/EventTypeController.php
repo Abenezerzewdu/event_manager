@@ -32,8 +32,10 @@ class EventTypeController extends Controller
         ]);
 
     $eventType = EventType::create($request->only('name'));
-            return redirect()->route('eventtype.show', $eventType->id)
-            ->with('success', 'Event type created successfully!');
+            
+    
+            return Inertia::location(route('eventtype.index'));
+
 }
 
 public function show($id)
@@ -66,8 +68,8 @@ public function update(Request $request, $id)
     $eventType = EventType::findOrFail($id);
     $eventType->update($request->only('name', 'category'));
 
-    return redirect()->route('eventtype.index', $eventType->id)
-                     ->with('success', 'Event type updated successfully!');
+    return Inertia::location(route('eventtype.index'));
+
 }
 
 public function destroy($id)
@@ -75,7 +77,7 @@ public function destroy($id)
     $eventType = EventType::findOrFail($id);
     $eventType->delete();
 
-    return redirect()->route('eventtype.index')
-                     ->with('success', 'Event type deleted successfully!');
+    return  Inertia::location(route('eventtype.index'));
+;
 }
 }

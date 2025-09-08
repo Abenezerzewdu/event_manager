@@ -39,7 +39,7 @@ class UserController extends Controller
 
         $user = User::create($validated);
 
-     return redirect()->route('user.show', $user->id)
+     return redirect()->route('user.index', $user->id)
                  ->with('success', 'User created successfully!');
 
     }
@@ -84,8 +84,8 @@ class UserController extends Controller
 
         $user->update($validated);
 
-      return redirect()->route('user.index')
-                 ->with('success', 'User updated successfully');
+      return Inertia::location(route('user.index'));
+
     }
 
     public function destroy($id)

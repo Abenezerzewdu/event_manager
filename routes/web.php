@@ -106,7 +106,7 @@ Route::get('/home',function(){
 Route::get('/services', [ServiceController::class, 'index'])->name('service.index');
 Route::get('/services/create', [ServiceController::class, 'create'])->name('service.create');
 Route::post('/services', [ServiceController::class, 'store'])->name('service.store');
-Route::get('/services/{id}', [ServiceController::class, 'show'])->name('service.show');
+ Route::get('/services/{id}', [ServiceController::class, 'show'])->name('service.show');
 Route::get('/services/{id}/edit', [ServiceController::class, 'edit'])->name('service.edit');
 Route::put('/services/{id}', [ServiceController::class, 'update'])->name('service.update');
 Route::delete('/services/{id}', [ServiceController::class, 'destroy'])->name('service.destroy');
