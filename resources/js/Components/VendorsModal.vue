@@ -708,7 +708,7 @@
 import { Link } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
 import { defineProps } from "vue";
-import { usePage } from "@inertiajs/vue3";
+import { usePage, router } from "@inertiajs/vue3";
 import { onMounted } from "vue";
 
 const page = usePage();
@@ -716,9 +716,8 @@ const props = defineProps({
     show: Boolean,
 });
 
-//loggedin user only can apply for vendorship
+// logged-in user only can apply for vendorship
 const authed = Boolean(page.props.auth.user);
-//console.log(authed);
 
 // Vendor registration state
 const showVendorModal = ref(false);
@@ -779,7 +778,7 @@ const previousStep = () => {
 const getPlanPrice = (plan) => {
     const prices = {
         basic: " 500.000 Br",
-        premium: "1000.000 Br ",
+        premium: "1000.000 Br",
         elite: "1500.000 Br",
     };
     return prices[plan] || " 0 Br";
@@ -813,11 +812,30 @@ const canProceed = computed(() => {
     return true;
 });
 
-const completeRegistration = () => {
-    // Handle registration completion
-    alert(
-        `Registration completed successfully! Welcome to Joy Wedding Services, ${businessInfo.value.name}!`
-    );
-    closeVendorModal();
-};
+function completeRegistration() {
+    // Build the payload **inside the function** to get current values
+    const payload = {
+        user_id: page.props.auth.user.id, // logged-in user
+        company_name: businessInfo.value.name,
+        contact_email: businessInfo.value.email,
+        phone: businessInfo.value.phone,
+        address: businessInfo.value.address,
+        description: businessInfo.value.description,
+        plan: selectedPlan.value,
+        payment_status: "unpaid", // default
+        status: "pending", // default pending for admin approval
+    };
+
+    console.log("Payload before sending:", payload);
+
+    router.post("/vendor/store", payload, {
+        onSuccess: () => {
+            closeVendorModal();
+            alert("Vendor registration submitted successfully!");
+        },
+        onError: (errors) => {
+            console.error("Validation failed:", errors);
+        },
+    });
+}
 </script>

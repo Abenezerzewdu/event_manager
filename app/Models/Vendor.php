@@ -8,12 +8,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Vendor extends Model
 {
     protected $fillable = [
+         'user_id',
         'company_name',
         'contact_email',
         'phone',
         'address',
         'description',
         'vendors_file',
+        'payment_status',
+        'plan',
+        'status',
     ];
 public function user(): BelongsTo
     {

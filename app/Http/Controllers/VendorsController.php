@@ -39,28 +39,25 @@ class VendorsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'company_name' => 'required|string|max:255',
-            'contact_email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
-            'user_id' => 'required|exists:users,id',
-            'status' => 'required|in:pending,approved,rejected',
-            'description' => 'nullable|string',
-            'vendors_file' => 'nullable|file|max:10240', // 10MB max
+        $validated = $request->validate([
+            'user_id'       => 'required|exists:users,id',
+            'company_name'  => 'required|string|max:255',
+            'contact_email' => 'required|email',
+            'phone'         => 'required|string|max:20',
+            'address'       => 'required|string|max:255',
+            'description'   => 'nullable|string|max:500',
+            'plan'          => 'required|in:basic,premium,elite',
+            'payment_status'=> 'in:unpaid,paid,refunded',
         ]);
 
-        $data = $request->all();
+        // status = pending (migration default) but we can enforce explicitly too
+        $validated['status'] = 'pending';
 
-        // Handle file upload
-        if ($request->hasFile('vendors_file')) {
-            $data['vendors_file'] = $request->file('vendors_file')->store('vendors/files', 'public');
-        }
+        Vendor::create($validated);
 
-        Vendor::create($data);
-
-        return redirect()->route('vendor.index')
-            ->with('success', 'Vendor created successfully.');
+        return redirect()->back()->with('success', 'Vendor registration submitted. Awaiting admin approval.');
     }
+
 
     /**
      * Display the specified vendor.
@@ -99,12 +96,7 @@ class VendorsController extends Controller
        $validated = $request->validate([
             'company_name' => 'required|string|max:255',
             'contact_email' => 'required|email|max:255',
-             'phone' => [
-        'required',
-        'string',
-        'max:20',
-        'regex:/^(\+251|0)[0-9]{9}$/'
-    ],
+            'phone' => [ 'required','string','max:20','regex:/^(\+251|0)[0-9]{9}$/'],
             'user_id' => 'required|exists:users,id',
 'status' => 'sometimes|required|in:pending,approved,rejected',
             'description' => 'nullable|string',
