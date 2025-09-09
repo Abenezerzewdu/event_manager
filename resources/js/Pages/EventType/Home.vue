@@ -174,8 +174,8 @@
                                 alt="Wedding couple"
                                 class="w-full h-[300px] md:h-[400px] lg:h-[500px] object-cover"
                             />
-                            <!-- Play button overlay -->
-                            <div
+                            <!-- Play button overlay for future to have different events playing in an edit-->
+                            <!-- <div
                                 class="absolute inset-0 flex items-center justify-center"
                             >
                                 <button
@@ -189,7 +189,7 @@
                                         <path d="M8 5v14l11-7z" />
                                     </svg>
                                 </button>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

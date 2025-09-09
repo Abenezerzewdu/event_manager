@@ -11,9 +11,9 @@
                         Get in Touch
                     </h1>
                     <p class="text-xl text-gray-600 mb-8">
-                        Ready to plan your dream wedding? Let's make your
-                        special day unforgettable. Contact us today and let's
-                        start planning together.
+                        Ready to plan your dream event? Let's make your special
+                        day unforgettable. Contact us today and let's start
+                        planning together.
                     </p>
                 </div>
             </div>
@@ -241,9 +241,10 @@
                                             Address
                                         </h3>
                                         <p class="text-gray-600">
-                                            Jl. Kebon Jeruk Raya No. 27<br />
-                                            Jakarta Barat 11530<br />
-                                            Indonesia
+                                            Addis Ababa,megenagna ,metebaber
+                                            building<br />
+                                            Addis Ababa 1000<br />
+                                            Ethiopia
                                         </p>
                                     </div>
                                 </div>
@@ -273,8 +274,8 @@
                                             Phone
                                         </h3>
                                         <p class="text-gray-600">
-                                            +62 21 5696 7890<br />
-                                            +62 812 3456 7890
+                                            +251 951022332<br />
+                                            +251 951023332
                                         </p>
                                     </div>
                                 </div>
@@ -304,8 +305,8 @@
                                             Email
                                         </h3>
                                         <p class="text-gray-600">
-                                            hello@hati.wedding<br />
-                                            info@hati.wedding
+                                            hello@omi.evento<br />
+                                            info@omi.wedding
                                         </p>
                                     </div>
                                 </div>

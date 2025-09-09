@@ -35,7 +35,9 @@
                         >
                             Wedding Vendors
                         </h1>
-                        <p class="mb-8 text-xl text-white animate-fade-in-delayed">
+                        <p
+                            class="mb-8 text-xl text-white animate-fade-in-delayed"
+                        >
                             Discover trusted professionals to make your wedding
                             dreams come true
                         </p>
@@ -83,7 +85,9 @@
                             <div class="mb-2 text-3xl font-bold">
                                 {{ stat.value }}+
                             </div>
-                            <div class="text-sm opacity-75">{{ stat.label }}</div>
+                            <div class="text-sm opacity-75">
+                                {{ stat.label }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -97,8 +101,8 @@
                             Our Vendor Categories
                         </h2>
                         <p class="max-w-3xl mx-auto text-xl text-gray-600">
-                            From stunning dresses to perfect venues, find all the
-                            professionals you need for your special day
+                            From stunning dresses to perfect venues, find all
+                            the professionals you need for your special day
                         </p>
                     </div>
 
@@ -142,7 +146,9 @@
                                 <div
                                     class="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black/60 to-transparent group-hover:opacity-100"
                                 >
-                                    <div class="absolute bottom-4 left-4 right-4">
+                                    <div
+                                        class="absolute bottom-4 left-4 right-4"
+                                    >
                                         <div
                                             class="mb-1 text-lg font-bold text-white"
                                         >
@@ -193,11 +199,15 @@
                                 >
                                     {{ vendor.name }}
                                 </h3>
-                                <p class="mb-3 text-sm text-gray-600 line-clamp-2">
+                                <p
+                                    class="mb-3 text-sm text-gray-600 line-clamp-2"
+                                >
                                     {{ vendor.description }}
                                 </p>
 
-                                <div class="flex items-center justify-between mb-4">
+                                <div
+                                    class="flex items-center justify-between mb-4"
+                                >
                                     <span class="font-bold text-hati-pink">{{
                                         vendor.startingPrice
                                     }}</span>
@@ -379,7 +389,9 @@
                                         >
                                             About
                                         </h3>
-                                        <p class="leading-relaxed text-gray-600">
+                                        <p
+                                            class="leading-relaxed text-gray-600"
+                                        >
                                             {{ selectedVendor.longDescription }}
                                         </p>
                                     </div>
@@ -411,7 +423,9 @@
                                             <div
                                                 class="mb-2 text-2xl font-bold text-hati-pink"
                                             >
-                                                {{ selectedVendor.startingPrice }}
+                                                {{
+                                                    selectedVendor.startingPrice
+                                                }}
                                             </div>
                                             <p class="text-sm text-gray-600">
                                                 Starting price - contact for
@@ -573,67 +587,67 @@ const stats = [
 ];
 
 // --- Vendors data (same as your original, trimmed for brevity) ---
-const vendors = ref([
-    {
-        id: 1,
-        name: "Bella Couture",
-        category: "Wedding Dresses",
-        description:
-            "Premium wedding dress boutique with designer gowns from renowned international brands.",
-        longDescription:
-            "Bella Couture has been creating dream wedding experiences for over a decade...",
-        image: "https://images.unsplash.com/photo-1594736797933-d0a4e2dded1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-        startingPrice: "Rp 8.000.000",
-        rating: 4.9,
-        reviews: 234,
-        location: "Jakarta Selatan",
-        fullAddress: "Jl. Kemang Raya No. 45, Jakarta Selatan",
-        phone: "+62 21 5555 1234",
-        email: "info@bellacouture.id",
-        services: [
-            "Designer Gowns",
-            "Custom Alterations",
-            "Bridal Accessories",
-            "Personal Styling",
-            "Fitting Services",
-        ],
-        isFavorite: false,
-    },
-    // ... rest of vendors
-]);
+// const vendors = ref([
+//     {
+//         id: 1,
+//         name: "Addis Dress",
+//         category: "Wedding Dresses",
+//         description:
+//             "Premium wedding dress boutique with designer gowns from renowned international brands.",
+//         longDescription:
+//             "Addis Dress has been creating dream wedding experiences for over a decade...",
+//         image: "https://images.unsplash.com/photo-1594736797933-d0a4e2dded1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+//         startingPrice: "8000 br",
+//         rating: 4.9,
+//         reviews: 234,
+//         location: "Addis Ababa,Bole",
+//         fullAddress: "Bole brass",
+//         phone: "+251941031411",
+//         email: "info@adis.id",
+//         services: [
+//             "Designer Gowns",
+//             "Custom Alterations",
+//             "Bridal Accessories",
+//             "Personal Styling",
+//             "Fitting Services",
+//         ],
+//         isFavorite: false,
+//     },
+// ... rest of vendors
+// ]);
 
 // --- Filtering vendors ---
-const filteredVendors = computed(() => {
-    let filtered = vendors.value;
+// const filteredVendors = computed(() => {
+//     let filtered = vendors.value;
 
-    if (activeCategory.value !== "All Categories") {
-        filtered = filtered.filter(
-            (vendor) => vendor.category === activeCategory.value
-        );
-    }
+//     if (activeCategory.value !== "All Categories") {
+//         filtered = filtered.filter(
+//             (vendor) => vendor.category === activeCategory.value
+//         );
+//     }
 
-    if (searchQuery.value) {
-        filtered = filtered.filter(
-            (vendor) =>
-                vendor.name
-                    .toLowerCase()
-                    .includes(searchQuery.value.toLowerCase()) ||
-                vendor.category
-                    .toLowerCase()
-                    .includes(searchQuery.value.toLowerCase()) ||
-                vendor.location
-                    .toLowerCase()
-                    .includes(searchQuery.value.toLowerCase()) ||
-                vendor.services.some((service) =>
-                    service
-                        .toLowerCase()
-                        .includes(searchQuery.value.toLowerCase())
-                )
-        );
-    }
+//     if (searchQuery.value) {
+//         filtered = filtered.filter(
+//             (vendor) =>
+//                 vendor.name
+//                     .toLowerCase()
+//                     .includes(searchQuery.value.toLowerCase()) ||
+//                 vendor.category
+//                     .toLowerCase()
+//                     .includes(searchQuery.value.toLowerCase()) ||
+//                 vendor.location
+//                     .toLowerCase()
+//                     .includes(searchQuery.value.toLowerCase()) ||
+//                 vendor.services.some((service) =>
+//                     service
+//                         .toLowerCase()
+//                         .includes(searchQuery.value.toLowerCase())
+//                 )
+//         );
+//     }
 
-    return filtered;
-});
+//     return filtered;
+// });
 
 // --- Actions ---
 const setActiveCategory = (category) => {

@@ -254,7 +254,7 @@
                                             <button
                                                 class="text-sm text-gray-600 hover:text-gray-800"
                                             >
-                                                Lihat Detail
+                                                View Detail
                                             </button>
                                         </div>
 
