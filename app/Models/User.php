@@ -29,6 +29,11 @@ class User extends Authenticatable
         'is_admin' => 'boolean',
     ];
 
+    public function vendor(){
+        
+      return $this->hasOne(Vendor::class);
+    }
+
     public function events()
     {
         return $this->hasMany(Event::class);

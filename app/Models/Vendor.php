@@ -19,10 +19,12 @@ class Vendor extends Model
         'plan',
         'status',
     ];
-public function user(): BelongsTo
+
+public function user()
     {
         return $this->belongsTo(User::class);
     }
+    
     public function vendorServices()
     {
         return $this->hasMany(VendorService::class);
@@ -32,6 +34,7 @@ public function user(): BelongsTo
     {
         return $this->hasMany(Review::class);
     }
+
      public function getStatusColorAttribute()
     {
         return [

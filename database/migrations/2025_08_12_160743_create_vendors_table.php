@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('vendors', function (Blueprint $table) {
             $table->id();
             // Foreign key to link vendor to user
-             $table->unsignedBigInteger('user_id');
+             $table->unsignedBigInteger('user_id')->unique();
              $table->string('company_name');
              $table->string('contact_email');
              $table->string('phone');

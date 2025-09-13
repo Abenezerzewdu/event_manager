@@ -39,6 +39,14 @@ class VendorsController extends Controller
      */
     public function store(Request $request)
     {
+        $user=auth()->user;
+        if($user->vendor){
+        return back()->withErrors([
+            'vendor' => 'You already registered as a vendor.',
+        ]);
+        }
+        
+        
         $validated = $request->validate([
             'user_id'       => 'required|exists:users,id',
             'company_name'  => 'required|string|max:255',
