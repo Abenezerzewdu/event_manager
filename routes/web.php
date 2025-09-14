@@ -26,6 +26,44 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 
 
+
+//new admin dashboard
+Route::get('/db', function () {
+  return Inertia::render('HomeView');
+})->middleware(['auth', 'verified'])->name('AdminDashboard');
+
+Route::get('/tables', function () {
+  return Inertia::render('TablesView');
+})->middleware(['auth', 'verified'])->name('tables');
+
+Route::get('/forms', function () {
+  return Inertia::render('FormsView');
+})->middleware(['auth', 'verified'])->name('forms');
+
+Route::get('/Error', function () {
+  return Inertia::render('ErrorView');
+})->middleware(['auth', 'verified'])->name('error');
+
+Route::get('/profiles', function () {
+  return Inertia::render('ProfileView');
+})->middleware(['auth', 'verified'])->name('profiles');
+
+Route::get('/responsive', function () {
+  return Inertia::render('ResponsiveView');
+})->middleware(['auth', 'verified'])->name('responsive');
+
+Route::get('/style', function () {
+  return Inertia::render('StyleView');
+})->middleware(['auth', 'verified'])->name('style');
+
+Route::get('/ui', function () {
+  return Inertia::render('UiView');
+})->middleware(['auth', 'verified'])->name('ui');
+//////////////
+
+
+
+
 Route::get('/vendor',function(){
 
     return Inertia::render('Vendor/index');
