@@ -26,6 +26,11 @@ import LayoutAuthenticated from "@/Layouts/LayoutAuthenticated.vue";
 import SectionTitleLineWithButton from "@/Components/SectionTitleLineWithButton.vue";
 import SectionBannerStarOnGitHub from "@/Components/SectionBannerStarOnGitHub.vue";
 
+defineProps({
+    totalUsers: Number,
+    totalVendors: Number,
+    totalServices: Number,
+});
 const chartData = ref(null);
 
 const fillChartData = () => {
@@ -51,15 +56,7 @@ const transactionBarItems = computed(() => mainStore.history);
                 title="Overview"
                 main
             >
-                <BaseButton
-                    href="https://github.com/justboil/admin-one-vue-tailwind"
-                    target="_blank"
-                    :icon="mdiGithub"
-                    label="Star on GitHub"
-                    color="contrast"
-                    rounded-full
-                    small
-                />
+                <BaseButton color="contrast" rounded-full small />
             </SectionTitleLineWithButton>
 
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 mb-6">
@@ -68,26 +65,26 @@ const transactionBarItems = computed(() => mainStore.history);
                     trend-type="up"
                     color="text-emerald-500"
                     :icon="mdiAccountMultiple"
-                    :number="512"
-                    label="Clients"
+                    :number="totalUsers"
+                    label="Users"
                 />
                 <CardBoxWidget
                     trend="12%"
                     trend-type="down"
                     color="text-blue-500"
                     :icon="mdiCartOutline"
-                    :number="7770"
-                    prefix="$"
-                    label="Sales"
+                    :number="totalVendors"
+                    prefix=""
+                    label="Vendors"
                 />
                 <CardBoxWidget
                     trend="Overflow"
                     trend-type="alert"
                     color="text-red-500"
                     :icon="mdiChartTimelineVariant"
-                    :number="256"
-                    suffix="%"
-                    label="Performance"
+                    :number="totalServices"
+                    suffix=""
+                    label="Services"
                 />
             </div>
 
@@ -116,7 +113,9 @@ const transactionBarItems = computed(() => mainStore.history);
                 </div>
             </div>
 
-            <SectionBannerStarOnGitHub class="mt-6 mb-6" />
+            <!-- <SectionBannerStarOnGitHub class="mt-6 mb-6" /> -->
+
+            <!-- chart -->
 
             <SectionTitleLineWithButton
                 :icon="mdiChartPie"

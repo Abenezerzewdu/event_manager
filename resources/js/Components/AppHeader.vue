@@ -124,13 +124,14 @@
                         @click="openVendorRegistration"
                         class="hidden px-3 py-2 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700 lg:block"
                     >
-                        Register as Vendor
+                        Become Vendor
                     </button>
 
                     <button
                         class="hidden text-gray-700 transition-colors hover:text-hati-pink md:block"
                     >
-                        <Link href="dashboard">Create </Link>
+                        <!-- make this based on the role of the user -->
+                        <Link v-if="authed" href="dashboard">Dashboard </Link>
                     </button>
 
                     <button

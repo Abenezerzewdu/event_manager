@@ -4,7 +4,7 @@ import { Link } from "@inertiajs/vue3";
 import { mdiMinus, mdiPlus } from "@mdi/js";
 import { getButtonColor } from "@/colors.js";
 import BaseIcon from "@/Components/BaseIcon.vue";
-import AsideMenuList from "@/components/AsideMenuList.vue";
+import AsideMenuList from "@/Components/AsideMenuList.vue";
 
 const props = defineProps({
     item: {
@@ -58,7 +58,7 @@ const menuClick = (event) => {
     <li>
         <component
             :is="item.route ? Link : 'a'"
-            :href="item.href"
+            :href="item.route ? route(item.route) : item.href"
             :target="item.target ?? null"
             class="flex cursor-pointer"
             :class="componentClass"

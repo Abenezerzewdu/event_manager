@@ -15,47 +15,47 @@ import {
 
 export default [
     {
-        route: "/dashboard",
+        route: "admin.dashboard",
         icon: mdiMonitor,
         label: "Dashboard",
     },
     {
-        route: "/tables",
+        route: "tables",
         label: "Tables",
         icon: mdiTable,
     },
     {
-        route: "/forms",
+        route: "forms",
         label: "Forms",
         icon: mdiSquareEditOutline,
     },
     {
-        route: "/ui",
+        route: "ui",
         label: "UI",
         icon: mdiTelevisionGuide,
     },
     {
-        route: "/responsive",
+        route: "responsive",
         label: "Responsive",
         icon: mdiResponsive,
     },
     {
-        route: "/",
+        route: "style",
         label: "Styles",
         icon: mdiPalette,
     },
     {
-        route: "/profile",
+        route: "profiles",
         label: "Profile",
         icon: mdiAccountCircle,
     },
     {
-        route: "/login",
+        route: "login",
         label: "Login",
         icon: mdiLock,
     },
     {
-        route: "/error",
+        route: "error",
         label: "Error",
         icon: mdiAlertCircle,
     },

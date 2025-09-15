@@ -28,9 +28,8 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 
 //new admin dashboard
-Route::get('/db', function () {
-  return Inertia::render('HomeView');
-})->middleware(['auth', 'verified'])->name('AdminDashboard');
+// Route::get('/Admin-dashboard', [AdminController::class,'index']
+// )->middleware(['auth', 'verified'])->name('AdminDashboard');
 
 Route::get('/tables', function () {
   return Inertia::render('TablesView');
