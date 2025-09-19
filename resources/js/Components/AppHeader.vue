@@ -121,6 +121,7 @@
                 <!-- Right Side -->
                 <div class="flex items-center space-x-2 md:space-x-4">
                     <button
+                        v-if="!isVendor"
                         @click="openVendorRegistration"
                         class="hidden px-3 py-2 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700 lg:block"
                     >
@@ -131,7 +132,9 @@
                         class="hidden text-gray-700 transition-colors hover:text-hati-pink md:block"
                     >
                         <!-- make this based on the role of the user -->
-                        <Link v-if="authed" href="dashboard">Dashboard </Link>
+                        <Link v-if="authed" :href="route('dashboard')"
+                            >Dashboard
+                        </Link>
                     </button>
 
                     <button
@@ -309,11 +312,12 @@ const showCart = ref(false);
 
 //eventtype props from appserviceprovider shared globally
 const events = page.props.events;
-
+const isVendor = page.props.auth.isVendor;
 //loggedin user only can apply for vendorship
 const authed = Boolean(page.props.auth.user);
 //console.log(authed);
-
+// const isNotVendor = page.props.;
+// console.log(isNotVendor);
 // Vendor registration state
 const showVendorModal = ref(false);
 const currentStep = ref(1);

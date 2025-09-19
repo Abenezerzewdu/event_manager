@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Vendor;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 
@@ -39,7 +40,12 @@ class VendorsController extends Controller
      */
     public function store(Request $request)
     {
-        $user=auth()->user;
+        
+        $user = Auth::user();
+
+        $vendor=Vendor::all();
+
+
         if($user->vendor){
         return back()->withErrors([
             'vendor' => 'You already registered as a vendor.',
@@ -60,7 +66,7 @@ class VendorsController extends Controller
 
         // status = pending (migration default) but we can enforce explicitly too
         $validated['status'] = 'pending';
-
+        
         Vendor::create($validated);
 
         return redirect()->back()->with('success', 'Vendor registration submitted. Awaiting admin approval.');

@@ -42,6 +42,10 @@ const menuClick = (event, item) => {
         //
         router.post(route("logout"));
     }
+    if (item.isMessage) {
+        router.get(route("admin.messages"));
+        console.log(isMessage);
+    }
 };
 </script>
 

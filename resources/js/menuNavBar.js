@@ -40,7 +40,7 @@ export default [
             {
                 icon: mdiAccount,
                 label: "My Profile",
-                route: "/profile",
+                route: "profile",
             },
             {
                 icon: mdiCogOutline,
@@ -49,6 +49,8 @@ export default [
             {
                 icon: mdiEmail,
                 label: "Messages",
+                route: "admin.messages",
+                isMessage: true,
             },
             {
                 isDivider: true,
@@ -66,20 +68,20 @@ export default [
         isDesktopNoLabel: true,
         isToggleLightDark: true,
     },
-    {
-        icon: mdiGithub,
-        label: "GitHub",
-        isDesktopNoLabel: true,
-        href: "https://github.com/justboil/admin-one-vue-tailwind",
-        target: "_blank",
-    },
-    {
-        icon: mdiReact,
-        label: "React version",
-        isDesktopNoLabel: true,
-        href: "https://github.com/justboil/admin-one-react-tailwind",
-        target: "_blank",
-    },
+    // {
+    //     icon: mdiGithub,
+    //     label: "GitHub",
+    //     isDesktopNoLabel: true,
+    //     href: "https://github.com/justboil/admin-one-vue-tailwind",
+    //     target: "_blank",
+    // },
+    // {
+    //     icon: mdiReact,
+    //     label: "React version",
+    //     isDesktopNoLabel: true,
+    //     href: "https://github.com/justboil/admin-one-react-tailwind",
+    //     target: "_blank",
+    // },
     {
         icon: mdiLogout,
         label: "Log out",

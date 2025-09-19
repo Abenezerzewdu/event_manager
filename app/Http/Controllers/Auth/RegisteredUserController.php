@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
+use Laravel\Pail\ValueObjects\Origin\Console;
+
+use function Laravel\Prompts\alert;
 
 class RegisteredUserController extends Controller
 {
@@ -41,7 +44,10 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
+       //assigned default role for registerd user as organizer
+        $user->assignRole('organizer');
+     
+         
         event(new Registered($user));
 
         Auth::login($user);

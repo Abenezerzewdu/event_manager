@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use App\Models\EventType;
-
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -28,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
         'auth' => function () {
             return [
                 'user' => Auth::user(),
-                 
+                
             ];
 
         },
