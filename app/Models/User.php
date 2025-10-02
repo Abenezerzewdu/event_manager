@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
+     use HasFactory;
+    use HasRoles;
     use Notifiable;
 
     protected $fillable = [
@@ -39,8 +43,19 @@ class User extends Authenticatable
         return $this->hasMany(Event::class);
     }
 
+    public function orders()
+{
+    return $this->hasMany(Order::class);
+}
+
     public function reviews()
     {
         return $this->hasMany(Review::class);
     }
+
+    public function roles()
+{
+    return $this->belongsToMany(\Spatie\Permission\Models\Role::class, 'model_has_roles', 'model_id', 'role_id');
+}
+
 }

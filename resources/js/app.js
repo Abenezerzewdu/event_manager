@@ -1,14 +1,20 @@
 import "../css/app.css";
+import "../css/main.css"; // Admin One styles
+
 import "./bootstrap";
 
-import { createInertiaApp } from "@inertiajs/vue3";
+import { createApp, h, ref, onMounted } from "vue";
+import { createInertiaApp, usePage } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
-import { createApp, h } from "vue";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy";
+import { createPinia } from "pinia";
 import axios from "axios";
-import { ref, onMounted } from "vue";
-import { usePage } from "@inertiajs/vue3";
 
+const appName = import.meta.env.VITE_APP_NAME || "Laravel";
+
+// ----------------------
+// Axios setup
+// ----------------------
 const token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
@@ -17,45 +23,61 @@ if (token) {
     console.error("CSRF token not found!");
 }
 
+axios.defaults.withCredentials = true; // send cookies with requests
+window.axios = axios; // optional: make axios global
 
-axios.defaults.withCredentials = true; //  send cookies with requests
-window.axios = axios; // optional, if we want axios globally
+// ----------------------
+// Pinia (for Admin One stores like dark mode)
+// ----------------------
+const pinia = createPinia();
 
-
-const appName = import.meta.env.VITE_APP_NAME || "Laravel";
-
+// ----------------------
+// Inertia app
+// ----------------------
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
-
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.vue`,
             import.meta.glob("./Pages/**/*.vue")
         ),
-
     setup({ el, App, props, plugin }) {
         return createApp({ render: () => h(App, props) })
             .use(plugin)
-            .use(ZiggyVue)
+            .use(pinia)
+            .use(ZiggyVue, Ziggy)
             .mount(el);
     },
-
     progress: {
         color: "#4B5563",
     },
-
 });
 
+// ----------------------
+// Post-login intent modal logic
+// ----------------------
 const page = usePage();
 const showPricingModal = ref(false);
 
 onMounted(() => {
-    // only run after login
     if (page.props.auth.user) {
         const intent = localStorage.getItem("postLoginIntent");
         if (intent === "pricing") {
             showPricingModal.value = true;
-            localStorage.removeItem("postLoginIntent"); // clear it
+            localStorage.removeItem("postLoginIntent");
         }
     }
 });
+
+// ----------------------
+// Optional: Dark mode store (Admin One)
+// ----------------------
+// import { useDarkModeStore } from "@/stores/darkMode.js"
+// const darkModeStore = useDarkModeStore(pinia)
+//
+// if (
+//   (!localStorage["darkMode"] && window.matchMedia("(prefers-color-scheme: dark)").matches) ||
+//   localStorage["darkMode"] === "1"
+// ) {
+//   darkModeStore.set(true)
+// }

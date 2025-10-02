@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
     protected $fillable = [
-        'rating',
-        'comment',
         'user_id',
         'vendor_id',
+        'rating',
+        'comment',
+        
+        
         // 'event_id'
     ];
 

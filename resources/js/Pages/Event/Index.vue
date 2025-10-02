@@ -1,4 +1,5 @@
 <template>
+  <AppHeader/>
   <div class="min-h-screen p-6 bg-gray-50">
     <!-- Navigation -->
     <nav class="mb-6 text-white bg-blue-800 shadow-lg">
@@ -135,7 +136,7 @@
 <script setup>
 import { Link, useForm } from '@inertiajs/vue3';
 import { ref,computed } from 'vue';
-
+import AppHeader from '@/Components/AppHeader.vue';
 const props = defineProps({
   events: {
     type: Array,
