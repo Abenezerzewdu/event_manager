@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Vendor;
 use App\Models\User;
+use Inertia\Inertia;
+use App\Models\Vendor;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 
 class VendorsController extends Controller
@@ -151,4 +152,55 @@ class VendorsController extends Controller
         return redirect()->route('vendor.index')
             ->with('success', 'Vendor deleted successfully.');
     }
+
+
+    
+
+   public function allVendors(Request $request)
+{
+    $vendors = Vendor::with(['services', 'reviews']);
+
+    // Filter by category if set
+    if ($request->category && $request->category !== 'All Categories') {
+        $vendors->whereHas('services', function ($q) use ($request) {
+            $q->where('name', $request->category);
+        });
+    }
+
+    // Search functionality
+    if ($request->search) {
+        $search = $request->search;
+        $vendors->where(function ($q) use ($search) {
+            $q->where('company_name', 'like', "%$search%")
+              ->orWhere('address', 'like', "%$search%")
+              ->orWhereHas('services', function ($sq) use ($search) {
+                  $sq->where('name', 'like', "%$search%");
+              });
+        });
+    }
+
+    $vendors = $vendors->paginate(9);
+
+    return Inertia::render('Vendors/Vendors', [
+        'vendors' => $vendors->through(fn($vendor) => [
+            'id' => $vendor->id,
+            'company_name' => $vendor->company_name,
+            'description' => $vendor->description,
+            'vendors_file' => $vendor->vendors_file,
+            'starting_price' => $vendor->services->min('price'),
+            'services' => $vendor->services->map(fn($s) => [
+                'id' => $s->id,
+                'name' => $s->name,
+                'price' => $s->price,
+            ]),
+            'rating' => round($vendor->reviews->avg('rating'), 1),
+            'email' => $vendor->contact_email,
+            'phone' => $vendor->phone,
+            'address' => $vendor->address,
+        ]),
+        'categories' => Service::pluck('name'),
+        'activeCategory' => $request->category ?? 'All Categories',
+    ]);
+}
+
 }

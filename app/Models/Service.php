@@ -28,4 +28,15 @@ class Service extends Model
     {
         return $this->hasMany(EventService::class);
     }
+
+    public function vendors()
+{
+    return $this->belongsToMany(Vendor::class, 'vendor_services');
+}
+
+public function orders()
+{
+    return $this->hasMany(Order::class);
+}
+
 }

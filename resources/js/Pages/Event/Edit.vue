@@ -1,4 +1,5 @@
 <template>
+    <AppHeader/>
     <div class="min-h-screen py-8 bg-gray-50">
         <div class="max-w-4xl px-4 mx-auto">
             <div class="overflow-hidden bg-white shadow-lg rounded-xl">
@@ -381,6 +382,7 @@
 <script setup>
 import { useForm, Link, router } from "@inertiajs/vue3";
 import { ref } from "vue";
+import AppHeader from "@/Components/AppHeader.vue";
 
 const props = defineProps({
     event: Object,

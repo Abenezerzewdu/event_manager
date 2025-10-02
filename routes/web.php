@@ -9,31 +9,52 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EventController;
 
 use App\Http\Controllers\GuestController;
-use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\OrderController;
 
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\VendorsController;
 
+
+
+use App\Http\Controllers\VendorsController;
 
 
 use App\Http\Controllers\EventTypeController;
 
-
 use App\Http\Controllers\EventServiceController;
-
 use App\Http\Controllers\VendorDashboardController;
 use App\Http\Controllers\DashboardRedirectController;
+use App\Http\Controllers\OrganizerDashboardController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-
+use App\Http\Controllers\HomeController;
 
 //organizer dashboard
 
-Route::get('/organizer/dashboard',function(){
-   return Inertia::render('Organizer/dashboard');
-})->name('organizer.dashboard');
-//via spatie,routes under organizer role
+
+
+
+
+//via spatie,routes under organizer and admin role
 Route::middleware(['auth','role:organizer|admin'])->group(function () {
+
+    Route::get('/organizer/dashboard',[OrganizerDashboardController::class,'dashboard'])->name('organizer.dashboard');
+
+     Route::get('/organizer/events', [OrganizerDashboardController::class, 'index'])->name('organizer.events.index');
+
+    Route::get('/organizer/events/{id}', [OrganizerDashboardController::class, 'show'])->name('organizer.events.show');
+
+    Route::get('/organizer/events/{id}/edit', [OrganizerDashboardController::class, 'edit'])->name('organizer.events.edit');
+
+    // Update Event
+Route::put('/organizer/events/{id}', [OrganizerDashboardController::class, 'update'])
+    ->name('organizer.events.update');
+
+// Delete Event
+Route::delete('/organizer/events/{id}', [OrganizerDashboardController::class, 'destroy'])
+    ->name('organizer.events.destroy');
+
+
       //event creating inside organizer
 Route::prefix('event')->controller(EventController::class)->group(function () {
     Route::get('/create', 'create')->name('event.create');
@@ -44,6 +65,19 @@ Route::prefix('event')->controller(EventController::class)->group(function () {
 Route::prefix('vendor')->controller(VendorsController::class)->group(function () {
     Route::post('/store','store')->name('vendor.store');
 });
+
+ Route::get('/my-orders', [OrderController::class, 'myOrders'])->name('orders.my');
+ 
+ Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+
+ Route::get('/orders/choose-event', [OrderController::class, 'chooseEvent'])
+    ->name('orders.choose-event');
+
+Route::post('/orders/handle', [OrderController::class, 'handleOrder'])
+    ->name('orders.handle');
+
+  Route::post('event/store', [EventController::class,'store'])->name('event.store');
+
 });
 
 
@@ -53,6 +87,21 @@ Route::prefix('vendor')->controller(VendorsController::class)->group(function ()
 Route::middleware(['auth','role:vendor'])->group(function () {
   
     Route::get('/vendor/dashboard',[VendorDashboardController::class,'index'])->name('vendor.dashboard');
+
+    Route::get('/vendor/services',[VendorDashboardController::class,'ViewServices'])->name('vendor.services');
+
+    Route::post('/vendor/services/update', [VendorDashboardController::class, 'updateServices'])
+    ->name('vendor.services.update');
+
+    Route::get('/vendor/profile',[VendorDashboardController::class,'profile'])->name('vendor.profile');
+
+    Route::post('/vendor/profile/update', [VendorDashboardController::class, 'updateProfile'])
+    ->name('vendor.profile.update');
+
+    Route::get('/vendor/orders', [OrderController::class, 'vendorOrders'])->name('vendor.orders');
+
+    Route::put('/vendor/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('vendor.orders.updateStatus');
+
 });
 
 //via spatie,routes under admin role
@@ -180,21 +229,16 @@ Route::get('/contact',function(){
 });
 
 //vendors test
-Route::get('/vendors',function(){
-    return Inertia::render('Vendors');
-});
+// Route::get('/vendors',function(){
+    
+// });
+
+Route::get('/vendors',[VendorsController::class,'allVendors'])->name('vendors.all');
 
 
 //home page route
-Route::get('/', function () {
-    
-    return Inertia::render('EventType/Home', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-})->name('home');
+Route::get('/', [HomeController::class,'index']
+)->name('home');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -231,7 +275,7 @@ Route::get('/reviews/create', [ReviewController::class, 'create'])->name('review
 Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store');
 
 
-// web.php
+ 
 Route::middleware(['auth'])->get('/dashboard', [DashboardRedirectController::class, 'redirectToDashboard'])->name('dashboard');
 
 Route::get('/debug-role', function() {

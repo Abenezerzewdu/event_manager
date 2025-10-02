@@ -24,7 +24,6 @@ import CardBoxTransaction from "@/Components/CardBoxTransaction.vue";
 import CardBoxClient from "@/Components/CardBoxClient.vue";
 import LayoutAuthenticated from "@/Layouts/LayoutAuthenticated.vue";
 import SectionTitleLineWithButton from "@/Components/SectionTitleLineWithButton.vue";
-import SectionBannerStarOnGitHub from "@/Components/SectionBannerStarOnGitHub.vue";
 
 defineProps({
     totalUsers: Number,
@@ -112,8 +111,6 @@ const transactionBarItems = computed(() => mainStore.history);
                     />
                 </div>
             </div>
-
-            <!-- <SectionBannerStarOnGitHub class="mt-6 mb-6" /> -->
 
             <!-- chart -->
 

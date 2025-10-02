@@ -120,18 +120,19 @@
 
                 <!-- Right Side -->
                 <div class="flex items-center space-x-2 md:space-x-4">
+                    <!-- become a vendor -->
                     <button
-                        v-if="!isVendor"
+                        v-if="!$page.props.auth.user?.isVendor"
                         @click="openVendorRegistration"
                         class="hidden px-3 py-2 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700 lg:block"
                     >
                         Become Vendor
                     </button>
 
+                    <!-- conditional dashboard routed -->
                     <button
                         class="hidden text-gray-700 transition-colors hover:text-hati-pink md:block"
                     >
-                        <!-- make this based on the role of the user -->
                         <Link v-if="authed" :href="route('dashboard')"
                             >Dashboard
                         </Link>
@@ -146,9 +147,9 @@
                     <!-- Cart -->
                     <div class="relative">
                         <button
-                            @click="toggleCart"
-                            data-cart-button
-                            class="relative p-2 text-gray-700 transition-colors hover:text-hati-pink"
+                            ref="cartButtonRef"
+                            @click.stop="toggleCart"
+                            class="relative p-2 text-gray-700 hover:text-hati-pink"
                         >
                             <svg
                                 class="w-6 h-6"
@@ -171,36 +172,23 @@
                             </span>
                         </button>
 
-                        <!-- Cart Dropdown -->
                         <div
                             v-if="showCart"
-                            data-cart-dropdown
-                            class="absolute right-0 z-50 mt-2 bg-white border border-gray-100 shadow-lg top-full w-80 rounded-xl"
+                            ref="cartDropdownRef"
+                            class="absolute right-0 z-50 mt-2 bg-white border shadow-lg top-full w-80 rounded-xl"
                         >
-                            <div class="p-4 border-b border-gray-100">
-                                <div class="flex items-center justify-between">
-                                    <h3 class="font-semibold">
-                                        Your Basket ({{ cartItems.length }})
-                                    </h3>
-                                    <button
-                                        @click="toggleCart"
-                                        class="text-gray-400 hover:text-gray-600"
-                                    >
-                                        <svg
-                                            class="w-5 h-5"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M6 18L18 6M6 6l12 12"
-                                            ></path>
-                                        </svg>
-                                    </button>
-                                </div>
+                            <div
+                                class="p-4 border-b flex items-center justify-between"
+                            >
+                                <h3 class="font-semibold">
+                                    Your Basket ({{ cartItems.length }})
+                                </h3>
+                                <button
+                                    @click="showCart = false"
+                                    class="text-gray-400 hover:text-gray-600"
+                                >
+                                    ✕
+                                </button>
                             </div>
 
                             <div class="overflow-y-auto max-h-64">
@@ -217,62 +205,31 @@
                                         :key="item.id"
                                         class="flex items-center p-4 space-x-3 border-b border-gray-50"
                                     >
-                                        <div
-                                            class="flex items-center justify-center w-8 h-8 bg-blue-100 rounded"
-                                        >
-                                            <svg
-                                                class="w-5 h-5 text-blue-600"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-3m-9 0h3m0 0h2m-6 0v-4a2 2 0 011-1h3a2 2 0 011 1v4M9 9h6"
-                                                ></path>
-                                            </svg>
-                                        </div>
-
                                         <div class="flex-1">
                                             <h4 class="text-sm font-medium">
-                                                {{ item.name }}
+                                                {{ item.vendor }} -
+                                                {{ item.service }}
                                             </h4>
                                             <p
                                                 class="text-sm font-bold text-hati-pink"
                                             >
-                                                {{ item.price }}
+                                                {{ item.price }} br
                                             </p>
                                         </div>
                                     </div>
 
                                     <div class="p-4">
-                                        <div
-                                            class="flex items-center justify-between mb-3"
+                                        <Link
+                                            href="/organizer/orders"
+                                            class="w-full py-2 text-white bg-blue-600 rounded-lg text-center hover:bg-blue-700"
                                         >
-                                            <span
-                                                class="font-bold text-hati-pink"
-                                                >90.000.000</span
-                                            >
-                                            <button
-                                                class="text-sm text-gray-600 hover:text-gray-800"
-                                            >
-                                                View Detail
-                                            </button>
-                                        </div>
-
-                                        <button
-                                            class="w-full py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
-                                        >
-                                            Your Basket ({{ cartItems.length }})
-                                        </button>
+                                            View Orders
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <!-- Mobile Menu Button -->
                     <button class="p-2 md:hidden">
                         <svg
@@ -308,17 +265,19 @@ import { onMounted } from "vue";
 import VendorsModal from "./VendorsModal.vue";
 const page = usePage();
 const props = defineProps({});
-const showCart = ref(false);
 
+const showCart = ref(false);
+const cartButtonRef = ref(null);
+const cartDropdownRef = ref(null);
+
+// Get cartItems from Inertia props
+const cartItems = computed(() => page.props.value?.cartItems || []);
 //eventtype props from appserviceprovider shared globally
 const events = page.props.events;
 const isVendor = page.props.auth.isVendor;
 //loggedin user only can apply for vendorship
 const authed = Boolean(page.props.auth.user);
-//console.log(authed);
-// const isNotVendor = page.props.;
-// console.log(isNotVendor);
-// Vendor registration state
+
 const showVendorModal = ref(false);
 const currentStep = ref(1);
 const selectedPlan = ref("premium");
@@ -337,6 +296,7 @@ const openVendorRegistration = () => {
         window.location.href = `/login?intended_action=open_vendor_modal`;
     }
 };
+
 onMounted(() => {
     const params = new URLSearchParams(window.location.search);
     const action = params.get("intended_action");
@@ -370,40 +330,24 @@ const businessInfo = ref({
     address: "",
 });
 
-const cartItems = ref([
-    {
-        id: 1,
-        name: "service-vendor",
-        price: "10.000.000 br",
-    },
-    {
-        id: 2,
-        name: "service-vendor",
-        price: "6000.00 br",
-    },
-    {
-        id: 3,
-        name: "service - vendor",
-        price: "25999 br",
-    },
-    {
-        id: 4,
-        name: "service - vendor",
-        price: "5000 br",
-    },
-]);
-
+// Toggle cart dropdown
 const toggleCart = () => {
     showCart.value = !showCart.value;
 };
 
-// Close cart when clicking outside
-document.addEventListener("click", (e) => {
-    const cartButton = e.target?.closest("[data-cart-button]");
-    const cartDropdown = e.target?.closest("[data-cart-dropdown]");
-
-    if (!cartButton && !cartDropdown) {
+// Close dropdown when clicking outside
+const handleClickOutside = (event) => {
+    if (
+        cartButtonRef.value &&
+        cartDropdownRef.value &&
+        !cartButtonRef.value.contains(event.target) &&
+        !cartDropdownRef.value.contains(event.target)
+    ) {
         showCart.value = false;
     }
+};
+
+onMounted(() => {
+    document.addEventListener("click", handleClickOutside);
 });
 </script>

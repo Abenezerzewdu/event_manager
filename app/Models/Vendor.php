@@ -35,6 +35,11 @@ public function user()
         return $this->hasMany(Review::class);
     }
 
+    public function orders()
+{
+    return $this->hasMany(Order::class);
+}
+
      public function getStatusColorAttribute()
     {
         return [
@@ -43,4 +48,23 @@ public function user()
             'rejected' => 'red'
         ][$this->status] ?? 'gray';
     }
+
+    public function services()
+{
+    return $this->belongsToMany(Service::class, 'vendor_services');
+}
+
+
+    // accessor for average rating
+    public function getAverageRatingAttribute()
+    {
+        return $this->reviews()->avg('rating') ?? 0;
+    }
+
+    // accessor for starting price
+    public function getStartingPriceAttribute()
+    {
+        return $this->services()->min('price') ?? 0;
+    }
+
 }
