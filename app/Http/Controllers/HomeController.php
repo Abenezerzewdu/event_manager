@@ -14,16 +14,16 @@ class HomeController extends Controller
     $user = Auth::user();
 
     // Only orders created by this organizer
-    $orders = $user->orders()->with(['vendor', 'service'])->get();
+    // $orders = $user->orders()->with(['vendor', 'service'])->get();
 
-    $cartItems = $orders->map(fn($order) => [
-        'id' => $order->id,
-        'name' => $order->vendor->name . ' - ' . $order->service->name,
-        'price' => $order->service->price,
-    ]);
+    // $cartItems = $orders->map(fn($order) => [
+    //     'id' => $order->id,
+    //     'name' => $order->vendor->name . ' - ' . $order->service->name,
+    //     'price' => $order->service->price,
+    // ]);
 
     return Inertia::render('Home', [
-        'cartItems' => $cartItems,  
+        // 'cartItems' => $cartItems,  
         'canLogin' => Route::has('login'), 'canRegister' => Route::has('register'),
     ]);
 }

@@ -11,7 +11,7 @@
                     </span>
                 </Link>
 
-                <!-- Navigation -->
+                <!-- Navigation for desktop -->
                 <nav class="items-center hidden space-x-8 md:flex">
                     <div class="relative group">
                         <button
@@ -62,7 +62,7 @@
                         </div>
                     </div>
 
-                    <!-- events dropdow -->
+                    <!-- events dropdown -->
                     <div class="relative group">
                         <button
                             class="flex items-center space-x-1 text-gray-700 transition-colors hover:text-hati-pink"
@@ -139,9 +139,9 @@
                     </button>
 
                     <button
-                        class="px-3 py-2 text-sm text-white transition-colors rounded-lg md:px-4 md:py-2 bg-hati-pink hover:bg-pink-600 md:text-base"
+                        class="px-3 py-2 text-sm text-black transition-colors rounded-lg md:px-4 md:py-2 bg-blur md:text-base"
                     >
-                        Enter
+                        Templates
                     </button>
 
                     <!-- Cart -->
@@ -230,8 +230,12 @@
                             </div>
                         </div>
                     </div>
+
                     <!-- Mobile Menu Button -->
-                    <button class="p-2 md:hidden">
+                    <button
+                        @click="showMobileNav = !showMobileNav"
+                        class="p-2 md:hidden"
+                    >
                         <svg
                             class="w-6 h-6"
                             fill="none"
@@ -247,6 +251,40 @@
                         </svg>
                     </button>
                 </div>
+
+                <!-- Mobile Navigation -->
+                <nav
+                    v-if="showMobileNav"
+                    class="absolute left-0 w-full px-4 py-4 space-y-2 bg-white border-t border-gray-100 md:hidden"
+                >
+                    <Link
+                        href="/vendors"
+                        class="block text-gray-700 transition-colors hover:text-hati-pink"
+                    >
+                        Vendors
+                    </Link>
+                    <Link
+                        href="/contact"
+                        class="block text-gray-700 transition-colors hover:text-hati-pink"
+                    >
+                        Contact
+                    </Link>
+                    <button
+                        v-if="!$page.props.auth.user?.isVendor"
+                        @click="openVendorRegistration"
+                        class="w-full px-3 py-2 text-white bg-blue-600 rounded-lg"
+                    >
+                        Become Vendor
+                    </button>
+                    <Link
+                        v-if="authed"
+                        :href="route('dashboard')"
+                        class="block text-gray-700 transition-colors hover:text-hati-pink"
+                    >
+                        Dashboard
+                    </Link>
+                </nav>
+
                 <VendorsModal
                     :show="showVendorModal"
                     @click="closeVendorModal"
@@ -258,24 +296,23 @@
 
 <script setup>
 import { Link } from "@inertiajs/vue3";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { defineProps } from "vue";
 import { usePage } from "@inertiajs/vue3";
-import { onMounted } from "vue";
 import VendorsModal from "./VendorsModal.vue";
+
 const page = usePage();
 const props = defineProps({});
 
 const showCart = ref(false);
+const showMobileNav = ref(false);
 const cartButtonRef = ref(null);
 const cartDropdownRef = ref(null);
 
 // Get cartItems from Inertia props
 const cartItems = computed(() => page.props.value?.cartItems || []);
-//eventtype props from appserviceprovider shared globally
 const events = page.props.events;
 const isVendor = page.props.auth.isVendor;
-//loggedin user only can apply for vendorship
 const authed = Boolean(page.props.auth.user);
 
 const showVendorModal = ref(false);
@@ -285,27 +322,14 @@ const paymentMethod = ref("card");
 
 const registrationSteps = ["Choose Plan", "Business Info", "Payment"];
 
-// Vendor registration methods
 const openVendorRegistration = () => {
-    //check for user is loggedin/registered
     if (authed) {
         showVendorModal.value = true;
         currentStep.value = 1;
     } else {
-        // localStorage.setItem("postLoginIntent", pricing);
         window.location.href = `/login?intended_action=open_vendor_modal`;
     }
 };
-
-onMounted(() => {
-    const params = new URLSearchParams(window.location.search);
-    const action = params.get("intended_action");
-
-    if (action === "open_vendor_modal") {
-        showVendorModal.value = true;
-        currentStep.value = 1;
-    }
-});
 
 const closeVendorModal = () => {
     showVendorModal.value = false;
@@ -330,12 +354,10 @@ const businessInfo = ref({
     address: "",
 });
 
-// Toggle cart dropdown
 const toggleCart = () => {
     showCart.value = !showCart.value;
 };
 
-// Close dropdown when clicking outside
 const handleClickOutside = (event) => {
     if (
         cartButtonRef.value &&
@@ -349,5 +371,13 @@ const handleClickOutside = (event) => {
 
 onMounted(() => {
     document.addEventListener("click", handleClickOutside);
+
+    const params = new URLSearchParams(window.location.search);
+    const action = params.get("intended_action");
+
+    if (action === "open_vendor_modal") {
+        showVendorModal.value = true;
+        currentStep.value = 1;
+    }
 });
 </script>

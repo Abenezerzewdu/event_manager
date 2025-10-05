@@ -17,7 +17,7 @@ class OrganizerDashboardController extends Controller
     $orders = $user->orders()->count(); // only orders created by this user
     $vendors = $user->orders()->distinct('vendor_id')->count('vendor_id'); // vendors user ordered from
 
-    return Inertia::render('Organizer/Dashboard', [
+    return Inertia::render('Organizer/dashboard', [
         'stats' => [
             'events' => $events,
             'orders' => $orders,

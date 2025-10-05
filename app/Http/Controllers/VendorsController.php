@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
+//controller for the admin page vendor controlling and also vendors page for users
 class VendorsController extends Controller
 {
     /**
@@ -158,7 +159,7 @@ class VendorsController extends Controller
 
    public function allVendors(Request $request)
 {
-    $vendors = Vendor::with(['services', 'reviews']);
+    $vendors = Vendor::with(['services', 'reviews'])->where('status','approved');
 
     // Filter by category if set
     if ($request->category && $request->category !== 'All Categories') {

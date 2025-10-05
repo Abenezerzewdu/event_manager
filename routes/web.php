@@ -60,6 +60,8 @@ Route::prefix('event')->controller(EventController::class)->group(function () {
     Route::get('/create', 'create')->name('event.create');
     
      Route::post('/store', 'store')->name('event.store');
+
+     Route::get('/{id}', 'show')->name('event.show');
 });
 
 Route::prefix('vendor')->controller(VendorsController::class)->group(function () {
